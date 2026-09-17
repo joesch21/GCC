@@ -7,7 +7,9 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "policy:hash": "node scripts/hash-genesis-policy.js",
-    "policy:verify": "node scripts/verify-genesis-policy.js"
+    "policy:verify": "node scripts/verify-genesis-policy.js",
+    "tender:hash": "node scripts/hash-genesis-tender.js",
+    "tender:verify": "node scripts/verify-genesis-tender.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
