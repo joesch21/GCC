@@ -52,7 +52,7 @@ Genesis I uses the immutable `GenesisVerifierAuthority` threshold of **2-of-3**.
 
 - **Verifier A** — Tower/Condor local automated verifier domain. Tower and Condor remain one security slot because they share the same host boundary.
 - **Verifier B** — the existing AWS KMS secp256k1 signer already proven end-to-end by the Genesis integration test.
-- **Verifier C** — a dedicated contingency EOA created on a separate physical/mobile device.
+- **Verifier C** — fixed Genesis I contingency EOA on a separate physical/mobile device: `0xd5422b7493e65c5b5cbfd70028df2D2ED8A39CDE`.
 
 Important current boundary: Condor's repository proves native BSC transaction signing exists but is production-disabled and does not yet prove an autonomous Genesis attestation signer. Verifier A must therefore be wired to the Genesis signing firewall before launch; merely naming a Condor address is not enough.
 
@@ -116,14 +116,15 @@ This is read-only. It does not request a key or send a transaction.
 
 ## Deployment preparation
 
-After Verifier A and Verifier C public addresses exist:
+Verifier C is now fixed in the preparation script. Once Verifier A's public address exists:
 
 ```bash
 GENESIS_VERIFIER_A_ADDRESS=0x... \
-GENESIS_VERIFIER_C_ADDRESS=0x... \
 GENESIS_SETTLEMENT_DEADLINE=<unix-seconds> \
 npm run mainnet:prepare
 ```
+
+`GENESIS_VERIFIER_C_ADDRESS` remains available only as an explicit override; the default Genesis I C address is the fixed mobile contingency verifier above.
 
 Verifier B defaults to the already proven Genesis I AWS KMS signer.
 
@@ -132,7 +133,6 @@ The first run prints the exact `GenesisVerifierAuthority` constructor arguments.
 ```bash
 GENESIS_AUTHORITY_ADDRESS=0x... \
 GENESIS_VERIFIER_A_ADDRESS=0x... \
-GENESIS_VERIFIER_C_ADDRESS=0x... \
 GENESIS_SETTLEMENT_DEADLINE=<unix-seconds> \
 npm run mainnet:prepare
 ```
