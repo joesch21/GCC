@@ -11,6 +11,7 @@
     "tender:hash": "node scripts/hash-genesis-tender.js",
     "tender:verify": "node scripts/verify-genesis-tender.js",
     "mainnet:inspect-gcc": "node scripts/inspect-gcc-mainnet.js",
+    "mainnet:plan-funding": "node scripts/plan-genesis-funding.js",
     "mainnet:prepare": "node scripts/prepare-genesis-mainnet.js"
   },
   "devDependencies": {
