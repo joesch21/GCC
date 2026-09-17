@@ -1,6 +1,7 @@
 const {
   Contract,
   JsonRpcProvider,
+  formatEther,
   formatUnits,
   getAddress,
   isAddress,
@@ -17,6 +18,7 @@ const ZERO = "0x0000000000000000000000000000000000000000";
 
 const ABI = [
   "function owner() view returns (address)",
+  "function balanceOf(address) view returns (uint256)",
   "function reflectionFee() view returns (uint256)",
   "function getBurnFee() view returns (uint256)",
   "function getTaxFee() view returns (uint256)",
@@ -43,15 +45,25 @@ async function main() {
   }
 
   const token = new Contract(GCC, ABI, provider);
-  const [owner, reflectionFee, burnFee, taxFee, feeAccount, fundingWalletExcluded] =
-    await Promise.all([
-      token.owner(),
-      token.reflectionFee(),
-      token.getBurnFee(),
-      token.getTaxFee(),
-      token.getFeeAccount(),
-      token.isExcludedFromFee(fundingWallet),
-    ]);
+  const [
+    owner,
+    reflectionFee,
+    burnFee,
+    taxFee,
+    feeAccount,
+    fundingWalletExcluded,
+    fundingWalletGccRaw,
+    fundingWalletBnbWei,
+  ] = await Promise.all([
+    token.owner(),
+    token.reflectionFee(),
+    token.getBurnFee(),
+    token.getTaxFee(),
+    token.getFeeAccount(),
+    token.isExcludedFromFee(fundingWallet),
+    token.balanceOf(fundingWallet),
+    provider.getBalance(fundingWallet),
+  ]);
 
   const totalFeePercent = reflectionFee + burnFee + taxFee;
   const targetEscrowBalanceRaw = parseUnits("100", 18);
@@ -80,6 +92,14 @@ async function main() {
     },
     fundingWallet,
     fundingWalletExcludedFromFee: fundingWalletExcluded,
+    fundingWalletBalances: {
+      gcc: formatUnits(fundingWalletGccRaw, 18),
+      bnb: formatEther(fundingWalletBnbWei),
+      hasEnoughGccForPlannedFunding:
+        fundingWalletGccRaw >= requiredFundingTransferRaw,
+      note:
+        "BNB balance is reported for visibility only. The eventual MetaMask funding transfer also requires enough BNB for gas.",
+    },
     rewardSemantics: {
       escrowNominalTransferPerAwardGcc: "10",
       ordinaryNonExcludedRecipientDirectCreditGcc: formatUnits(
