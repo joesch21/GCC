@@ -1,0 +1,124 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Production AWS workload identity and KMS boundary for GCC Genesis Verifier B.
+  This template does not deploy a Lambda function or authorize a mainnet
+  deployment.
+
+Resources:
+  GCCGenesisVerifierBExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: GCCGenesisVerifierBExecutionRole
+      Description: Lambda execution role for the production Genesis Verifier B signer.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: LambdaOnlyTrust
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GCCGenesisVerifierBLambdaLogging
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: WriteLambdaExecutionLogs
+                Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+
+  GCCGenesisVerifierBProductionKmsKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: GCC Genesis Verifier B production secp256k1 signing key for GenesisVerifierAuthority.
+      KeySpec: ECC_SECG_P256K1
+      KeyUsage: SIGN_VERIFY
+      Enabled: true
+      MultiRegion: false
+      Tags:
+        - Key: Name
+          Value: GCC Genesis Verifier B Production Signing Key
+        - Key: Environment
+          Value: production
+        - Key: System
+          Value: gcc-genesis
+        - Key: CryptographicDomain
+          Value: Verifier-B
+        - Key: Purpose
+          Value: GenesisVerifierAuthority
+      KeyPolicy:
+        Version: '2012-10-17'
+        Id: GCCGenesisVerifierBProductionKeyPolicy
+        Statement:
+          - Sid: AccountAdministrativeKeyManagement
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action:
+              - kms:CancelKeyDeletion
+              - kms:DescribeKey
+              - kms:DisableKey
+              - kms:EnableKey
+              - kms:GetKeyPolicy
+              - kms:ListResourceTags
+              - kms:PutKeyPolicy
+              - kms:ScheduleKeyDeletion
+              - kms:TagResource
+              - kms:UntagResource
+              - kms:UpdateKeyDescription
+            Resource: '*'
+          - Sid: GenesisVerifierBWorkloadUse
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - GCCGenesisVerifierBExecutionRole
+                  - Arn
+            Action:
+              - kms:DescribeKey
+              - kms:GetPublicKey
+              - kms:Sign
+            Resource: '*'
+
+  GCCGenesisVerifierBKmsUsePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    DependsOn: GCCGenesisVerifierBProductionKmsKey
+    Properties:
+      ManagedPolicyName: GCCGenesisVerifierBKmsUsePolicy
+      Description: Exact production KMS permissions for the Genesis Verifier B Lambda role.
+      Roles:
+        - Ref: GCCGenesisVerifierBExecutionRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: UseOnlyGenesisVerifierBProductionKey
+            Effect: Allow
+            Action:
+              - kms:DescribeKey
+              - kms:GetPublicKey
+              - kms:Sign
+            Resource:
+              Fn::GetAtt:
+                - GCCGenesisVerifierBProductionKmsKey
+                - Arn
+
+Outputs:
+  ProductionKmsKeyArn:
+    Description: ARN consumed by the internal AWS signer adapter configuration.
+    Value:
+      Fn::GetAtt:
+        - GCCGenesisVerifierBProductionKmsKey
+        - Arn
+  WorkloadRoleArn:
+    Description: ARN assumed by the production Genesis Verifier B Lambda workload.
+    Value:
+      Fn::GetAtt:
+        - GCCGenesisVerifierBExecutionRole
+        - Arn
