@@ -160,7 +160,7 @@ Do **not** deploy or fund until all of these are fixed and reviewed:
 
 The Solidity constructor refuses deployment unless `block.chainid == 56`.
 
-The contract is non-upgradeable and uses Solidity 0.8.37 with the EVM target pinned to `paris`. OpenZeppelin Contracts is pinned to the audited npm `latest` line used by this project, version 5.6.1.
+The contract is non-upgradeable and uses Solidity 0.8.37 with the EVM target pinned to `cancun`, required by the pinned OpenZeppelin implementation and compatible with BSC's enabled MCOPY support (BEP-342 / EIP-5656). OpenZeppelin Contracts is pinned to the audited npm `latest` line used by this project, version 5.6.1.
 
 The current implementation must still receive an independent contract review before real GCC is funded.
 
