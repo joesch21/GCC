@@ -1,5 +1,5 @@
 {
-  "policy_version": "0.2-draft",
+  "policy_version": "0.3-draft",
   "tender_id": "GCC-GENESIS-001",
   "name": "GCC Genesis I Simple Pass/Fail Verification Policy",
   "purpose": "Authorize only objective 10 GCC payments for valid GCC Genesis I discovery-client submissions. No ranking, finalist judgment, or subjective best-submission decision is used.",
@@ -10,7 +10,12 @@
     "human_per_payment_approval": false,
     "signer_rotation": false,
     "admin_override": false,
-    "independence_requirement": "Each verifier independently checks the same objective evidence bundle. Two valid independent attestations are required."
+    "independence_requirement": "Each verifier independently checks the same objective evidence bundle. Two valid independent attestations are required.",
+    "genesis_i_operating_profile": {
+      "normal_autonomous_path": "Verifier A plus Verifier B may authorize an objectively valid award without human per-payment approval.",
+      "verifier_c": "A dedicated contingency EOA on a separate physical/mobile device. It cannot authorize an award alone and is not required in the normal A+B path.",
+      "scope": "This profile is bounded to Genesis I and its 100 GCC reward cap; stronger production custody can replace it in later experiments."
+    }
   },
   "economics": {
     "total_budget_gcc": "100",
@@ -162,12 +167,25 @@
     "Verifier attestations must be reproducible against the award digest and policy hash."
   ],
   "unresolved_before_open": [
-    "verified GCC BSC mainnet token address",
     "production verifier addresses including independent Verifier C",
     "recipient binding challenge format",
     "deployed GenesisVerifierAuthority and GenesisDeliverableEscrow addresses",
     "public opening and settlement timestamps",
     "independent contract/security review"
   ],
-  "tender_hash": "0xb212e78a15b6e7c38add763145d29076e2b7214413d29179593440cde45fb14c"
+  "tender_hash": "0x68192a6a21ff53afa698edd0573a6a27f2294e9a8de3a20f41d102e0be3ab86d",
+  "network": {
+    "name": "BNB Smart Chain Mainnet",
+    "chain_id": 56,
+    "gcc_token_address": "0x092ac429b9c3450c9909433eb0662c3b7c13cf9a",
+    "gcc_token_decimals": 18
+  },
+  "recipient_gas_bootstrap": {
+    "recipient_bnb_required_to_receive_gcc": false,
+    "settlement_transaction_gas_paid_by": "relayer",
+    "bootstrap_target_bnb": "0.0002",
+    "bootstrap_cap_per_recipient_bnb": "0.0002",
+    "maximum_bootstrapped_recipients": 10,
+    "rule": "A separate bounded gas sponsor may top up an EOA recipient only after a successful GCC settlement. The gas sponsor is not part of the GCC escrow and cannot authorize GCC awards."
+  }
 }

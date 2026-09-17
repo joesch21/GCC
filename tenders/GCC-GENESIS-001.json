@@ -7,7 +7,10 @@
   "network": {
     "name": "BNB Smart Chain Mainnet",
     "chain_id": 56,
-    "native_gas_token": "BNB"
+    "native_gas_token": "BNB",
+    "gcc_token_address": "0x092ac429b9c3450c9909433eb0662c3b7c13cf9a",
+    "gcc_token_decimals": 18,
+    "gcc_token_address_status": "VERIFIED_BSCSCAN"
   },
   "economics": {
     "total_budget_gcc": "100",
@@ -107,6 +110,20 @@
         "amount_gcc": "0",
         "max_awards": 0
       }
+    },
+    "recipient_gas": {
+      "receive_gcc_requires_recipient_bnb": false,
+      "settlement_gas_paid_by": "relayer",
+      "genesis_i_bootstrap": "After a successful award, a separate bounded gas sponsor may top up an EOA recipient with a small amount of BNB so the agent can make its first on-chain transaction. This is outside the 100 GCC escrow and is not required to receive GCC.",
+      "bootstrap_target_bnb": "0.0002",
+      "bootstrap_cap_per_recipient_bnb": "0.0002",
+      "maximum_bootstrapped_recipients": 10,
+      "note": "Gas bootstrap is operationally separate from the immutable GCC escrow and may be skipped for contract/smart-account recipients that use their own paymaster or gas mechanism."
+    },
+    "verifier_profile": {
+      "A": "Tower/Condor automated verifier domain (one slot only)",
+      "B": "Existing AWS KMS secp256k1 signer proven by the Genesis I integration path",
+      "C": "Dedicated contingency EOA on a separate physical/mobile device; it cannot authorize a payment alone and is not required in the normal A+B automated path"
     }
   },
   "experiment_metrics": [
