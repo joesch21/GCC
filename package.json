@@ -1,0 +1,15 @@
+{
+  "name": "gcc-genesis-settlement",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bounded deliverable settlement contract for GCC Genesis Experiment",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "6.1.2",
+    "@openzeppelin/contracts": "5.6.1",
+    "hardhat": "2.29.1"
+  }
+}
