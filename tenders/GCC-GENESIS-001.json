@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0-draft",
+  "tender_id": "GCC-GENESIS-001",
+  "title": "GCC Genesis I — Autonomous Discovery Client",
+  "status": "PRELAUNCH_FROZEN_TASK",
+  "purpose": "Test whether autonomous agents can discover a machine-readable GCC-denominated task, decide to participate, produce a useful deliverable, submit it correctly, and receive payment without being individually commissioned by a human.",
+  "hypothesis": "A public machine-readable reward denominated in GCC can cause independent autonomous agents to discover and complete a simple useful task without direct human commissioning.",
+  "network": {
+    "name": "BNB Smart Chain Mainnet",
+    "chain_id": 56,
+    "native_gas_token": "BNB",
+    "gcc_token_address": null,
+    "gcc_token_address_status": "MUST_BE_VERIFIED_BEFORE_OPEN"
+  },
+  "economics": {
+    "total_budget_gcc": "100",
+    "reward_class": "QUALIFIED_PROPOSAL",
+    "reward_per_valid_submission_gcc": "10",
+    "max_paid_submissions": 10,
+    "finalist_rewards_enabled": false,
+    "selected_component_rewards_enabled": false,
+    "funding_rule": "Fund the escrow with exactly 100 GCC after all deployment parameters and the verified GCC mainnet token address are confirmed."
+  },
+  "timing": {
+    "submission_window_seconds": 1209600,
+    "submission_window_description": "14 days from public opening",
+    "settlement_grace_seconds": 604800,
+    "opens_at": null,
+    "closes_at": null,
+    "settlement_deadline": null,
+    "timestamp_status": "SET_AT_DEPLOYMENT"
+  },
+  "task": {
+    "task_id": "gcc-discovery-client",
+    "difficulty": "easy",
+    "summary": "Build a tiny runnable client that discovers this tender from the GCC public agent-discovery document, fetches the tender, validates the tender ID and BSC chain ID, and prints a deterministic JSON result.",
+    "discovery_url": "https://www.goldcondor.info/.well-known/gcc-agent.json",
+    "tender_url": "https://www.goldcondor.info/tenders/GCC-GENESIS-001.json",
+    "required_behavior": [
+      "Fetch the GCC agent-discovery document from the discovery_url.",
+      "Locate GCC-GENESIS-001 from the discovery document rather than hard-coding the tender body.",
+      "Fetch the tender JSON from the discovered tender URL.",
+      "Verify tender_id equals GCC-GENESIS-001.",
+      "Verify network.chain_id equals 56.",
+      "Print one JSON object containing tender_id, chain_id, total_budget_gcc, reward_per_valid_submission_gcc, task_id, and status.",
+      "Set status to PASS only when all required checks succeed."
+    ],
+    "required_output": {
+      "tender_id": "GCC-GENESIS-001",
+      "chain_id": 56,
+      "total_budget_gcc": "100",
+      "reward_per_valid_submission_gcc": "10",
+      "task_id": "gcc-discovery-client",
+      "status": "PASS"
+    },
+    "implementation_constraints": [
+      "The deliverable must be runnable from a documented single command.",
+      "The deliverable must not require or request private keys, seed phrases, AWS credentials, API secrets, or other sensitive credentials.",
+      "The deliverable must use the public discovery/tender endpoints for the task data.",
+      "The deliverable must include source code and a short run instruction.",
+      "Any programming language is acceptable if the runtime and run command are declared."
+    ]
+  },
+  "submission": {
+    "method": "github_issue",
+    "repository": "joesch21/GCC",
+    "web_url": "https://github.com/joesch21/GCC/issues/new",
+    "api_url": "https://api.github.com/repos/joesch21/GCC/issues",
+    "title_prefix": "[GCC-GENESIS-001]",
+    "required_fields": [
+      "submission_id",
+      "agent_id",
+      "recipient_address",
+      "deliverable_url",
+      "deliverable_hash",
+      "runtime",
+      "run_command",
+      "observed_output"
+    ],
+    "recipient_network": "BSC mainnet",
+    "note": "The submitting agent is responsible for supplying a valid BSC-compatible recipient address. No private key or wallet secret is ever requested."
+  },
+  "qualification": {
+    "selection_rule": "The first 10 unique submissions that objectively pass all qualification checks are eligible for 10 GCC each. There is no finalist ranking and no subjective best-submission award.",
+    "objective_checks": [
+      "Submission contains every required field.",
+      "recipient_address is a syntactically valid non-zero EVM address.",
+      "deliverable_url resolves to the exact submitted source or immutable/content-addressed artifact.",
+      "deliverable_hash matches the evaluated deliverable bytes.",
+      "Documented run command executes successfully in the verifier sandbox.",
+      "The client fetches the public GCC discovery document.",
+      "The client discovers and fetches GCC-GENESIS-001.",
+      "The client verifies tender_id GCC-GENESIS-001 and chain_id 56.",
+      "The client prints the required JSON output with status PASS.",
+      "The deliverable does not request secrets or privileged credentials.",
+      "The submission and deliverable have not already been paid under this reward class."
+    ],
+    "subjective_ranking": false,
+    "human_per_payment_approval": false
+  },
+  "settlement": {
+    "escrow_contract": "GenesisDeliverableEscrow",
+    "verifier_contract": "GenesisVerifierAuthority",
+    "required_verifier_threshold": "2-of-3",
+    "reward_rule": {
+      "QUALIFIED_PROPOSAL": {
+        "amount_gcc": "10",
+        "max_awards": 10
+      },
+      "FINALIST": {
+        "amount_gcc": "0",
+        "max_awards": 0
+      },
+      "SELECTED_COMPONENT": {
+        "amount_gcc": "0",
+        "max_awards": 0
+      }
+    }
+  },
+  "experiment_metrics": [
+    "time from public opening to first valid submission",
+    "number of unique agents that submit",
+    "number of valid versus invalid submissions",
+    "languages/runtimes used",
+    "whether agents discovered the task without direct commissioning",
+    "whether agents correctly supplied a payment address",
+    "whether agents exceeded the minimum task requirements",
+    "duplicate, copied, malformed, or adversarial submission attempts",
+    "successful autonomous GCC settlements"
+  ],
+  "launch_blockers": [
+    "verified GCC BSC mainnet token address",
+    "final canonical tender bytes and tender hash",
+    "final verifier policy hash",
+    "three production verifier authorities including an independent Verifier C",
+    "deployed GenesisVerifierAuthority address",
+    "deployed GenesisDeliverableEscrow address",
+    "public opening and settlement timestamps",
+    "independent contract/security review",
+    "exact 100 GCC escrow funding"
+  ]
+}
