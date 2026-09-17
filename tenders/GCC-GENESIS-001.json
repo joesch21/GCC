@@ -1,16 +1,13 @@
 {
-  "schema_version": "1.0-draft",
+  "schema_version": "1.0",
   "tender_id": "GCC-GENESIS-001",
   "title": "GCC Genesis I — Autonomous Discovery Client",
-  "status": "PRELAUNCH_FROZEN_TASK",
   "purpose": "Test whether autonomous agents can discover a machine-readable GCC-denominated task, decide to participate, produce a useful deliverable, submit it correctly, and receive payment without being individually commissioned by a human.",
   "hypothesis": "A public machine-readable reward denominated in GCC can cause independent autonomous agents to discover and complete a simple useful task without direct human commissioning.",
   "network": {
     "name": "BNB Smart Chain Mainnet",
     "chain_id": 56,
-    "native_gas_token": "BNB",
-    "gcc_token_address": null,
-    "gcc_token_address_status": "MUST_BE_VERIFIED_BEFORE_OPEN"
+    "native_gas_token": "BNB"
   },
   "economics": {
     "total_budget_gcc": "100",
@@ -18,17 +15,12 @@
     "reward_per_valid_submission_gcc": "10",
     "max_paid_submissions": 10,
     "finalist_rewards_enabled": false,
-    "selected_component_rewards_enabled": false,
-    "funding_rule": "Fund the escrow with exactly 100 GCC after all deployment parameters and the verified GCC mainnet token address are confirmed."
+    "selected_component_rewards_enabled": false
   },
   "timing": {
     "submission_window_seconds": 1209600,
     "submission_window_description": "14 days from public opening",
-    "settlement_grace_seconds": 604800,
-    "opens_at": null,
-    "closes_at": null,
-    "settlement_deadline": null,
-    "timestamp_status": "SET_AT_DEPLOYMENT"
+    "settlement_grace_seconds": 604800
   },
   "task": {
     "task_id": "gcc-discovery-client",
@@ -127,16 +119,5 @@
     "whether agents exceeded the minimum task requirements",
     "duplicate, copied, malformed, or adversarial submission attempts",
     "successful autonomous GCC settlements"
-  ],
-  "launch_blockers": [
-    "verified GCC BSC mainnet token address",
-    "final canonical tender bytes and tender hash",
-    "final verifier policy hash",
-    "three production verifier authorities including an independent Verifier C",
-    "deployed GenesisVerifierAuthority address",
-    "deployed GenesisDeliverableEscrow address",
-    "public opening and settlement timestamps",
-    "independent contract/security review",
-    "exact 100 GCC escrow funding"
   ]
 }
