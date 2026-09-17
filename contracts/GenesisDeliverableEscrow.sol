@@ -46,7 +46,7 @@ contract GenesisDeliverableEscrow is EIP712, ReentrancyGuard {
     uint256 public immutable rewardCap;
 
     uint256 public totalPaid;
-    uint32 public totalAwardsPaid;
+    uint256 public totalAwardsPaid;
 
     mapping(bytes32 awardClass => RewardRule rule) private _rewardRules;
     mapping(bytes32 awardId => bool paid) public paidAward;
@@ -186,10 +186,8 @@ contract GenesisDeliverableEscrow is EIP712, ReentrancyGuard {
         // Effects before interaction. Any token transfer revert rolls all state back.
         paidAward[awardId] = true;
         paidDeliverableClass[deliverableClassKey] = true;
-        unchecked {
-            rule.paidAwards += 1;
-            totalAwardsPaid += 1;
-        }
+        rule.paidAwards += 1;
+        totalAwardsPaid += 1;
         totalPaid += amount;
 
         gcc.safeTransfer(award.recipient, amount);
