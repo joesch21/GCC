@@ -1,0 +1,153 @@
+{
+  "policy_version": "0.1-draft",
+  "tender_id": "GCC-GENESIS-001",
+  "name": "GCC Genesis Deliverable Verification Policy",
+  "purpose": "Define the evidence that independent verifier authorities must inspect before authorizing a GCC Genesis award.",
+  "authority_model": {
+    "verifier_contract": "GenesisVerifierAuthority",
+    "verifier_count": 3,
+    "threshold": 2,
+    "human_per_payment_approval": false,
+    "signer_rotation": false,
+    "admin_override": false,
+    "signer_custody_requirement": "Production verifier keys or smart-account authorities must be controlled by isolated agent/verifier systems. Human operators must not receive or share the private signing material.",
+    "independence_requirement": "Each verifier must perform its own policy evaluation from the evidence bundle. One verifier may not merely copy another verifier's conclusion."
+  },
+  "canonicalization": {
+    "algorithm": "stable-json-v1",
+    "description": "Recursively sort object keys lexicographically, preserve array order, serialize without insignificant whitespace, UTF-8 encode, then Keccak-256 hash.",
+    "deployment_binding": "The resulting policy hash is immutable in GenesisVerifierAuthority and every verifier attestation signs that policy hash."
+  },
+  "required_evidence_bundle": {
+    "submission_manifest": {
+      "required_fields": [
+        "tender_id",
+        "submission_id",
+        "agent_id",
+        "recipient_address",
+        "submitted_at",
+        "deliverable_hash",
+        "deliverable_location",
+        "submission_schema_version"
+      ],
+      "rules": [
+        "tender_id must equal GCC-GENESIS-001",
+        "deliverable_hash must commit to the exact evaluated bytes",
+        "recipient_address must be the address requested by the submitting agent",
+        "submitted_at must be within the tender submission window once opened"
+      ]
+    },
+    "validation_report": {
+      "required_fields": [
+        "submission_id",
+        "tender_hash",
+        "deliverable_hash",
+        "schema_valid",
+        "mandatory_sections_present",
+        "provenance_present",
+        "duplicate_review",
+        "secret_request_check",
+        "security_boundary_present",
+        "failure_modes_present"
+      ],
+      "hard_fail_conditions": [
+        "schema_valid is false",
+        "mandatory_sections_present is false",
+        "provenance_present is false",
+        "secret_request_check is not PASS",
+        "security_boundary_present is false",
+        "failure_modes_present is false",
+        "duplicate_review is DISQUALIFY"
+      ]
+    },
+    "recipient_binding": {
+      "required_fields": [
+        "recipient_address",
+        "binding_method",
+        "binding_evidence_hash"
+      ],
+      "accepted_methods": [
+        "agent identity credential binding the recipient address",
+        "recipient wallet signature over the submission/tender binding challenge"
+      ],
+      "rule": "The verifier must reject an award if the payout address cannot be tied to the submitting agent or its declared settlement identity."
+    },
+    "assessment_manifest": {
+      "required_fields": [
+        "assessment_version",
+        "tender_hash",
+        "submission_id",
+        "deliverable_hash",
+        "reward_class",
+        "gate_results",
+        "architectural_analysis",
+        "security_analysis",
+        "provenance_evidence",
+        "recipient_binding_evidence",
+        "assessment_hash_input_manifest"
+      ],
+      "rule": "assessment_hash in the escrow award must be the Keccak-256 commitment to the canonical assessment manifest."
+    }
+  },
+  "reward_class_rules": {
+    "QUALIFIED_PROPOSAL": {
+      "all_required": [
+        "all common hard gates pass",
+        "proposal addresses every mandatory tender requirement",
+        "proposal identifies assumptions and external dependencies",
+        "proposal distinguishes current facts from proposed architecture",
+        "proposal includes an implementable path for at least one core function: discovery, identity, verification, settlement, or agent-to-agent contracting",
+        "no unresolved critical security violation is identified"
+      ]
+    },
+    "FINALIST": {
+      "prerequisite": "QUALIFIED_PROPOSAL criteria must still pass",
+      "all_required": [
+        "assessment identifies at least two materially useful architecture components or one unusually strong end-to-end design",
+        "proposal includes explicit trade-offs and failure handling",
+        "proposal can be decomposed into executable implementation tenders",
+        "no unresolved critical security violation is identified",
+        "assessment explains why the proposal is materially stronger than a merely qualifying submission without relying on token-holder identity, popularity, or payment address"
+      ]
+    },
+    "SELECTED_COMPONENT": {
+      "prerequisite": "Underlying submission must pass QUALIFIED_PROPOSAL criteria",
+      "all_required": [
+        "a distinct component hash is identified for the selected contribution",
+        "component attribution identifies the originating submission and agent",
+        "component has a concrete intended integration point in the reference architecture",
+        "assessment documents why the component is being adopted",
+        "no unresolved critical security violation is identified"
+      ]
+    }
+  },
+  "prohibited_bases_for_award": [
+    "identity of the human operator funding the escrow",
+    "relationship to GCC founders or maintainers",
+    "token balance held by the submitting agent",
+    "agreement with a preferred political, social, or ideological viewpoint",
+    "private off-record promises not represented in the evidence bundle"
+  ],
+  "verifier_attestation": {
+    "eip712_domain_name": "GCC Genesis Verifier Authority",
+    "eip712_domain_version": "1",
+    "type": "Attestation(bytes32 awardDigest,bytes32 policyHash)",
+    "statement": "By signing, the verifier attests that it independently evaluated the evidence bundle, found the requested reward class compliant with this policy, and found no known hard-fail condition.",
+    "authorization_encoding": "abi.encode(address[] signers, bytes[] signatures)",
+    "signer_ordering": "Signer addresses must be strictly ascending; duplicates invalidate the bundle."
+  },
+  "audit_requirements": [
+    "The evidence bundle or content-addressed references sufficient to reconstruct it must be retained.",
+    "The canonical policy hash used at deployment must be published.",
+    "Each assessment manifest hash must be published with the award record.",
+    "Each verifier address and verifier-set hash must be published before the tender opens.",
+    "Verifier attestations must be reproducible against the award digest and policy hash."
+  ],
+  "unresolved_before_open": [
+    "production verifier addresses/agent authorities",
+    "final policy version and canonical policy hash",
+    "submission and assessment storage location",
+    "recipient binding challenge format",
+    "independent security review of verifier and escrow contracts"
+  ]
+}
