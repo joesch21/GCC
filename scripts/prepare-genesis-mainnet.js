@@ -4,6 +4,7 @@ const { getAddress, isAddress, parseUnits } = require("ethers");
 
 const GCC_TOKEN = "0x092ac429b9c3450c9909433eb0662c3b7c13cf9a";
 const DEFAULT_VERIFIER_B = "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6";
+const DEFAULT_VERIFIER_C = "0xd5422b7493e65c5b5cbfd70028df2d2ed8a39cde";
 const ZERO = "0x0000000000000000000000000000000000000000";
 
 function readPinned(relativePath) {
@@ -32,7 +33,9 @@ function main() {
   const verifierB = process.env.GENESIS_VERIFIER_B_ADDRESS
     ? requiredAddress("GENESIS_VERIFIER_B_ADDRESS")
     : getAddress(DEFAULT_VERIFIER_B);
-  const verifierC = requiredAddress("GENESIS_VERIFIER_C_ADDRESS");
+  const verifierC = process.env.GENESIS_VERIFIER_C_ADDRESS
+    ? requiredAddress("GENESIS_VERIFIER_C_ADDRESS")
+    : getAddress(DEFAULT_VERIFIER_C);
 
   const unique = new Set([verifierA.toLowerCase(), verifierB.toLowerCase(), verifierC.toLowerCase()]);
   if (unique.size !== 3) throw new Error("Verifier A, B, and C must be three distinct addresses");
@@ -63,6 +66,7 @@ function main() {
       B: verifierB,
       BSource: process.env.GENESIS_VERIFIER_B_ADDRESS ? "environment override" : "existing Genesis I AWS KMS experimental signer",
       C: verifierC,
+      CSource: process.env.GENESIS_VERIFIER_C_ADDRESS ? "environment override" : "fixed Genesis I mobile contingency verifier",
       threshold: 2
     },
     GenesisVerifierAuthority: {
