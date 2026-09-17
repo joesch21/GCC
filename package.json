@@ -9,7 +9,9 @@
     "policy:hash": "node scripts/hash-genesis-policy.js",
     "policy:verify": "node scripts/verify-genesis-policy.js",
     "tender:hash": "node scripts/hash-genesis-tender.js",
-    "tender:verify": "node scripts/verify-genesis-tender.js"
+    "tender:verify": "node scripts/verify-genesis-tender.js",
+    "mainnet:inspect-gcc": "node scripts/inspect-gcc-mainnet.js",
+    "mainnet:prepare": "node scripts/prepare-genesis-mainnet.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
