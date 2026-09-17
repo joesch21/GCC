@@ -1,0 +1,37 @@
+name: Genesis Escrow Contract
+
+on:
+  push:
+    branches:
+      - main
+      - feature/genesis-deliverable-escrow
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "hardhat.config.js"
+      - "package.json"
+      - ".github/workflows/genesis-contract.yml"
+  pull_request:
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "hardhat.config.js"
+      - "package.json"
+      - ".github/workflows/genesis-contract.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm install --ignore-scripts
+      - run: npm run compile
+      - run: npm test
