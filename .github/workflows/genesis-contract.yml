@@ -1,13 +1,15 @@
-name: Genesis Escrow Contract
+name: Genesis Contract Authority
 
 on:
   push:
     branches:
       - main
-      - feature/genesis-deliverable-escrow
     paths:
       - "contracts/**"
       - "test/**"
+      - "policies/**"
+      - "schemas/**"
+      - "scripts/**"
       - "hardhat.config.js"
       - "package.json"
       - ".github/workflows/genesis-contract.yml"
@@ -15,6 +17,9 @@ on:
     paths:
       - "contracts/**"
       - "test/**"
+      - "policies/**"
+      - "schemas/**"
+      - "scripts/**"
       - "hardhat.config.js"
       - "package.json"
       - ".github/workflows/genesis-contract.yml"
@@ -32,5 +37,6 @@ jobs:
         with:
           node-version: "22"
       - run: npm install --ignore-scripts
+      - run: npm run policy:hash
       - run: npm run compile
       - run: npm test
