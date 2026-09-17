@@ -83,15 +83,19 @@ function main() {
             0
           ],
           rewardCapRaw: parseUnits("100", 18).toString(),
-          rewardCapGcc: "100"
+          rewardCapGcc: "100",
+          rewardSemantics:
+            "10 GCC is the nominal token transfer amount. Live GCC transfer fees apply to non-exempt recipients."
         }
       : {
           status: "WAITING_FOR_DEPLOYED_AUTHORITY_ADDRESS",
           next: "After the authority deployment is mined and verified, set GENESIS_AUTHORITY_ADDRESS and rerun this script."
         },
     funding: {
-      rule: "Do not fund before both contracts are deployed, verified, constructor bindings are checked, and the live GCC transfer-fee preflight has passed.",
-      amountGcc: "100"
+      rule: "Do not fund before both contracts are deployed, verified, constructor bindings are checked, and the fee-aware funding plan has been run for the actual funding wallet.",
+      targetEscrowBalanceGcc: "100",
+      next:
+        "Run: npm run mainnet:plan-funding -- <PUBLIC_FUNDING_WALLET_ADDRESS>. Do not assume a 100 GCC wallet transfer credits 100 GCC to the escrow."
     }
   };
 
