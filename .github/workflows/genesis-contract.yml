@@ -38,5 +38,6 @@ jobs:
           node-version: "22"
       - run: npm install --ignore-scripts
       - run: npm run policy:hash
+      - run: npm run policy:verify
       - run: npm run compile
       - run: npm test
