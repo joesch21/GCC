@@ -5,7 +5,8 @@
   "description": "Bounded deliverable settlement contract for GCC Genesis Experiment",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "policy:hash": "node scripts/hash-genesis-policy.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
