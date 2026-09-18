@@ -33,7 +33,7 @@
     "rewardCapGcc": "100",
     "localPostDeployVerification": "PASS",
     "bscscanSourceVerification": "PENDING",
-    "localBytecodeVerification": "PENDING"
+    "localBytecodeVerification": "PASS"
   },
   "funding": {
     "status": "NOT_FUNDED",
@@ -50,10 +50,10 @@
   },
   "verification": {
     "authorityLocalOnChainCheck": "PASS",
-    "replacementEscrowLocalOnChainCheck": "PENDING",
-    "replacementEscrowRuntimeBytecodeMatch": null,
-    "replacementEscrowDeploymentReceiptSuccessful": null,
-    "replacementEscrowImmutableAndPublicBindingsMatch": null,
+    "replacementEscrowLocalOnChainCheck": "PASS",
+    "replacementEscrowRuntimeBytecodeMatch": true,
+    "replacementEscrowDeploymentReceiptSuccessful": true,
+    "replacementEscrowImmutableAndPublicBindingsMatch": true,
     "bscscanSourcePublication": "PENDING"
   },
   "verifierCanary": {
