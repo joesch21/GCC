@@ -6,6 +6,7 @@ const {
 } = require("ethers");
 
 const {
+  GENESIS_POLICY_VERSION,
   GENESIS_TENDER_ID,
   REWARD_CLASS_HASHES,
   REWARD_CLASS_NAMES,
@@ -219,8 +220,10 @@ function validateAssessment(assessment, award, config) {
   requireObject(assessment, "assessment");
   requireKeys(assessment, ASSESSMENT_KEYS, "assessment");
 
-  if (assessment.assessment_version !== "0.1-draft") {
-    rejectRequest("assessment_version must be 0.1-draft");
+  if (assessment.assessment_version !== GENESIS_POLICY_VERSION) {
+    rejectRequest(
+      `assessment_version must be ${GENESIS_POLICY_VERSION}`
+    );
   }
   const tenderHash = normalizeHash(assessment.tender_hash, "assessment.tender_hash");
   if (tenderHash !== award.tenderHash || tenderHash !== config.tenderHash) {
