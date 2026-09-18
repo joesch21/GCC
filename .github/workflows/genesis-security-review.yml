@@ -1,0 +1,46 @@
+name: Genesis Security Review
+
+on:
+  pull_request:
+    paths:
+      - "contracts/**"
+      - "hardhat.config.js"
+      - "package.json"
+      - "scripts/summarize-slither.py"
+      - ".github/workflows/genesis-security-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  slither:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm install --ignore-scripts
+      - run: python -m pip install --upgrade pip slither-analyzer
+      - run: npm run compile
+      - name: Run Slither against Genesis contracts
+        run: |
+          set +e
+          slither .             --exclude-dependencies             --filter-paths "node_modules|contracts/test"             --json slither-report.json
+          code=$?
+          echo "slither_exit_code=$code" >> "$GITHUB_ENV"
+          test -f slither-report.json
+          exit 0
+      - name: Summarize Slither findings
+        run: |
+          python scripts/summarize-slither.py slither-report.json | tee slither-summary.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: genesis-slither-review
+          path: |
+            slither-report.json
+            slither-summary.json
