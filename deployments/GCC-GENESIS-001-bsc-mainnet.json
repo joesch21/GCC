@@ -36,7 +36,7 @@
     "localBytecodeVerification": "PASS"
   },
   "funding": {
-    "status": "NOT_FUNDED",
+    "status": "FUNDED",
     "targetEscrowBalanceGcc": "100",
     "note": "Replacement escrow is unfunded. Rerun local bytecode/binding verification and the live fee-aware funding planner before any GCC transfer.",
     "latestPlanner": {
@@ -46,7 +46,15 @@
       "expectedDirectEscrowCreditGcc": "100.0",
       "fundingWalletExcludedFromFee": false,
       "observedTotalFeePercent": "2"
-    }
+    },
+    "fundingTransactionHash": "0xfc157fc199e9e40d2d1c5408bc27a32372800e180cd0286b92bda4761144c83f",
+    "grossTransferGcc": "102.040816326530612244",
+    "verifiedEscrowBalanceRaw": "100009102059288651504",
+    "verifiedEscrowBalanceGcc": "100.009102059288651504",
+    "verifiedFundingShortfallRaw": "0",
+    "verifiedExcessAboveNominalLiabilityRaw": "9102059288651504",
+    "verifiedExcessAboveNominalLiabilityGcc": "0.009102059288651504",
+    "verificationStatus": "PASS"
   },
   "verification": {
     "authorityLocalOnChainCheck": "PASS",
@@ -72,22 +80,23 @@
     "attestationDigest": "0xa26df571fb40ff6c59068620a04f3d54f2f725ac7273673b82249d08170a4153"
   },
   "relayerCanary": {
-    "status": "PASS",
+    "status": "PASS_FUNDED_SIMULATION",
     "chainId": 56,
     "escrow": "0x8e834961EeC8F1a7048964B28E8156A211993E12",
     "transactionSent": false,
     "fundsMoved": false,
     "authorityAccepted2Of3": true,
-    "awardDigest": "0xf3d139309d0d0604ed99b93e8d1f3d1604bfc698a7b8eb37a5d9f95ae7863092",
-    "attestationDigest": "0x02c057f5144f86d036193a4efacebe0b3f1555585e24f1206a9b5f7641fc2de9",
+    "awardDigest": "0x1dd698ab75c781eb9d42d0ba67b5ea209ee3be04f54f3dc20be5e8e6c4dab0c3",
+    "attestationDigest": "0x03dd88e1fdb0a09a655c5cd164f02f27e2500e231558c9309a29875bc8ab3296",
     "awardId": "0x52d2111ebd9af62623f0bf936d54c7ae1b51abdf3bb8a6c61ac3d730426c46e6",
-    "escrowBalanceRaw": "0",
-    "fundingShortfallRaw": "100000000000000000000",
-    "fundedForAward": false,
+    "escrowBalanceRaw": "100009102059288651504",
+    "fundingShortfallRaw": "0",
+    "fundedForAward": true,
     "settlementSimulation": {
-      "attempted": false,
-      "success": false,
-      "reason": "ESCROW_NOT_FUNDED_FOR_AWARD"
+      "attempted": true,
+      "success": true,
+      "gasEstimate": "243675",
+      "reason": null
     }
   },
   "priorEscrows": [
