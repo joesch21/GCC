@@ -53,8 +53,11 @@ const escrowArtifact = readArtifact(
 );
 const ethersPath = path.resolve(
   path.dirname(require.resolve("ethers")),
-  "../dist/ethers.min.js"
+  "../dist/ethers.umd.min.js"
 );
+if (!fs.existsSync(ethersPath)) {
+  throw new Error(`Browser ethers bundle not found: ${ethersPath}`);
+}
 
 function json(res, value) {
   const body = JSON.stringify(value);
