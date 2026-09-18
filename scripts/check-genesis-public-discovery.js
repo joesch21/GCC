@@ -167,12 +167,24 @@ async function main() {
 }
 
 main().catch((error) => {
+  const message = error.message || String(error);
   console.error(
     JSON.stringify({
       status: "FAIL",
       externallyDiscoverable: false,
-      message: error.message || String(error),
+      message,
     })
   );
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try {
+      fs.appendFileSync(
+        process.env.GITHUB_STEP_SUMMARY,
+        "## Genesis external verification failure\n\n" +
+          "text: " + message + "\n"
+      );
+    } catch (_summaryError) {
+      // Summary emission is diagnostic only.
+    }
+  }
   process.exitCode = 1;
 });
