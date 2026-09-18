@@ -38,7 +38,7 @@
   "funding": {
     "status": "FUNDED",
     "targetEscrowBalanceGcc": "100",
-    "note": "Replacement escrow is unfunded. Rerun local bytecode/binding verification and the live fee-aware funding planner before any GCC transfer.",
+    "note": "Canonical replacement escrow is funded. Verified fundingShortfallRaw is 0; the small balance above 100 GCC is reflection-derived and does not increase the nominal reward cap.",
     "latestPlanner": {
       "status": "PASS",
       "requiredWalletTransferGcc": "102.040816326530612244",
@@ -127,5 +127,14 @@
     "fundingStatus": "FUNDED_USER_CONFIRMED",
     "fundedAmountBnb": "0.0011",
     "fundingVerification": "PENDING_ONCHAIN_BALANCE_CHECK"
+  },
+  "intakeBridge": {
+    "status": "IMPLEMENTED_PENDING_LIVE_SYNTHETIC_DRY_RUN",
+    "repository": "joesch21/GCC",
+    "issueTitlePrefix": "[GCC-GENESIS-001]",
+    "recipientBinding": "EVM personal-sign over deterministic tender/submission/deliverable/recipient challenge",
+    "sandbox": "Disposable unprivileged Docker container; no host secrets; networked PASS required and network-disabled PASS rejected",
+    "canonicalRequest": "Feeds the existing Genesis A+B verifier and bounded relayer path",
+    "humanPerPaymentApproval": false
   }
 }
