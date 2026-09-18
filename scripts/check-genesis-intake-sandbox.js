@@ -59,7 +59,7 @@ async function main() {
 
   try {
     const port = server.address().port;
-    const result = verifyNetworkedAndOfflineRuns({
+    const result = await verifyNetworkedAndOfflineRuns({
       bytes,
       deliverableUrl:
         "https://example.invalid/genesis-synthetic-client.mjs",
