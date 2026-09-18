@@ -19,7 +19,7 @@
     "address": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
     "transactionHash": "0x27444fe06d918d00820f0ac62fb15fc6542cc9dd7d0969495cc249d22f00ff1b",
     "localPostDeployVerification": "PASS",
-    "bscscanSourceVerification": "PENDING",
+    "bscscanSourceVerification": "VERIFIED",
     "localBytecodeVerification": "PASS"
   },
   "escrow": {
@@ -54,7 +54,8 @@
     "replacementEscrowRuntimeBytecodeMatch": true,
     "replacementEscrowDeploymentReceiptSuccessful": true,
     "replacementEscrowImmutableAndPublicBindingsMatch": true,
-    "bscscanSourcePublication": "PENDING"
+    "bscscanSourcePublication": "PARTIAL",
+    "authorityBscScanSourcePublication": "VERIFIED"
   },
   "verifierCanary": {
     "status": "PASS",
