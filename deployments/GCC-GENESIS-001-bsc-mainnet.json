@@ -70,13 +70,14 @@
     "attestationDigest": "0xa26df571fb40ff6c59068620a04f3d54f2f725ac7273673b82249d08170a4153"
   },
   "relayerCanary": {
-    "status": "SUPERSEDED_WITH_ESCROW",
+    "status": "PASS",
     "chainId": 56,
+    "escrow": "0x8e834961EeC8F1a7048964B28E8156A211993E12",
     "transactionSent": false,
     "fundsMoved": false,
     "authorityAccepted2Of3": true,
-    "awardDigest": "0x5f3eed8b6ff6d3477cc5f34872cc5ff28f9e8846f7f38918721de3ff097fbfeb",
-    "attestationDigest": "0xfb4210bdbd9b3df895f7574a756ea2b3e3858152f1512d9225f82ea1f778cda0",
+    "awardDigest": "0xf3d139309d0d0604ed99b93e8d1f3d1604bfc698a7b8eb37a5d9f95ae7863092",
+    "attestationDigest": "0x02c057f5144f86d036193a4efacebe0b3f1555585e24f1206a9b5f7641fc2de9",
     "awardId": "0x52d2111ebd9af62623f0bf936d54c7ae1b51abdf3bb8a6c61ac3d730426c46e6",
     "escrowBalanceRaw": "0",
     "fundingShortfallRaw": "100000000000000000000",
@@ -85,8 +86,7 @@
       "attempted": false,
       "success": false,
       "reason": "ESCROW_NOT_FUNDED_FOR_AWARD"
-    },
-    "note": "PASS was against the prior escrow domain. Rerun against the replacement escrow before funding."
+    }
   },
   "priorEscrows": [
     {
@@ -104,5 +104,17 @@
       "status": "SUPERSEDED_UNFUNDED",
       "supersededReason": "Public opening was not activated at the originally planned time. Replaced before funding to preserve the full published 14-day submission window plus 7-day settlement grace."
     }
-  ]
+  ],
+  "relayer": {
+    "address": "0x381c2939c943C52D9260B0c635d2FD7B17FB1C21",
+    "role": "GENESIS_SETTLEMENT_RELAYER",
+    "keystoreLocation": "local encrypted keystore; path intentionally not committed",
+    "privateKeyExported": false,
+    "gccCustody": false,
+    "arbitraryTransactionApi": false,
+    "gasAsset": "BNB",
+    "fundingStatus": "FUNDED_USER_CONFIRMED",
+    "fundedAmountBnb": "0.0011",
+    "fundingVerification": "PENDING_ONCHAIN_BALANCE_CHECK"
+  }
 }
