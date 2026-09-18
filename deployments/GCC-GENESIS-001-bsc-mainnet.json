@@ -57,17 +57,17 @@
     "bscscanSourcePublication": "PENDING"
   },
   "verifierCanary": {
-    "status": "SUPERSEDED_WITH_ESCROW",
+    "status": "PASS",
     "chainId": 56,
+    "escrow": "0x8e834961EeC8F1a7048964B28E8156A211993E12",
     "verifierA": "0x282C3a391e767c87E3907d9fCd94FA6107C4123b",
     "verifierB": "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6",
     "authority": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
     "authorityAccepted2Of3": true,
     "transactionSent": false,
     "fundsMoved": false,
-    "awardDigest": "0x535b74ca346ad5c1fcb553085d42d8cb906e176a7d7979a60d6d22f9571f40d8",
-    "attestationDigest": "0x80e91e01d24cabad0ed09fef2d638485813ce8da75eb62e350a837f5fae829d8",
-    "note": "PASS was against the prior escrow domain. Rerun against the replacement escrow before funding."
+    "awardDigest": "0x7857b99fe82bf1d6173fe1be0fb2cfd559791be441e29ce8e61a20a65bec83c6",
+    "attestationDigest": "0xa26df571fb40ff6c59068620a04f3d54f2f725ac7273673b82249d08170a4153"
   },
   "relayerCanary": {
     "status": "SUPERSEDED_WITH_ESCROW",
