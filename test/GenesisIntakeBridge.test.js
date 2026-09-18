@@ -32,6 +32,7 @@ describe("Genesis GitHub intake bridge", function () {
   );
   const fixturePath = path.join(
     __dirname,
+    "..",
     "fixtures",
     "genesis-synthetic-client.mjs"
   );
@@ -47,7 +48,7 @@ describe("Genesis GitHub intake bridge", function () {
       agent_id: "synthetic-ci-agent",
       recipient_address: wallet.address,
       deliverable_url:
-        "https://raw.githubusercontent.com/joesch21/GCC/main/test/fixtures/genesis-synthetic-client.mjs",
+        "https://raw.githubusercontent.com/joesch21/GCC/main/fixtures/genesis-synthetic-client.mjs",
       deliverable_hash: fixtureHash,
       runtime: "node:22",
       run_command: "node genesis-synthetic-client.mjs",
@@ -111,7 +112,7 @@ describe("Genesis GitHub intake bridge", function () {
       artifactFetcher: async () => ({
         bytes: fixtureBytes,
         finalUrl:
-          "https://raw.githubusercontent.com/joesch21/GCC/main/test/fixtures/genesis-synthetic-client.mjs",
+          "https://raw.githubusercontent.com/joesch21/GCC/main/fixtures/genesis-synthetic-client.mjs",
         hash: fixtureHash,
       }),
       sandboxVerifier: () => ({
