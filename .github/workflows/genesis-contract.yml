@@ -63,6 +63,7 @@ jobs:
       - run: node --check scripts/dry-run-genesis-issue.js
       - run: node --check scripts/run-genesis-autonomous.js
       - run: node --check scripts/check-genesis-intake-sandbox.js
+      - run: node --check scripts/create-genesis-synthetic-issue.js
       - run: npm run intake:sandbox-canary
       - run: node --check scripts/export-genesis-verification-bundle.js
       - run: npm test
