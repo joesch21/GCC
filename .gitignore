@@ -6,3 +6,6 @@ coverage/
 
 # Local encrypted Genesis Verifier A keystore (never commit)
 genesis-verifier-a.keystore.json
+
+# Local encrypted Genesis settlement relayer keystore (never commit)
+genesis-relayer.keystore.json
