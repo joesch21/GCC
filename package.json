@@ -26,7 +26,8 @@
     "mainnet:intake:dry-run": "node scripts/dry-run-genesis-issue.js",
     "mainnet:intake:run": "node scripts/run-genesis-autonomous.js",
     "intake:sandbox-canary": "node scripts/check-genesis-intake-sandbox.js",
-    "mainnet:intake:synthetic-issue:create": "node scripts/create-genesis-synthetic-issue.js"
+    "mainnet:intake:synthetic-issue:create": "node scripts/create-genesis-synthetic-issue.js",
+    "mainnet:public-discovery:verify": "node scripts/check-genesis-public-discovery.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
