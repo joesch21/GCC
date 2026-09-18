@@ -51,4 +51,9 @@ jobs:
       - run: node --check scripts/check-genesis-mainnet-bytecode.js
       - run: node --check scripts/check-genesis-verifier-canary.js
       - run: node --check src/genesisVerifierB/awsKmsSigner.js
+      - run: node --check src/genesisSettlement/relayer.js
+      - run: node --check src/genesisSettlement/encryptedRelayer.js
+      - run: node --check scripts/create-genesis-relayer.js
+      - run: node --check scripts/check-genesis-settlement-relayer.js
+      - run: node --check scripts/run-genesis-relayer.js
       - run: npm test
