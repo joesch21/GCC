@@ -50,13 +50,13 @@ Genesis I therefore does **not** claim that every recipient's balance increases 
 
 Genesis I uses the immutable `GenesisVerifierAuthority` threshold of **2-of-3**.
 
-- **Verifier A** — Tower/Condor local automated verifier domain. Tower and Condor remain one security slot because they share the same host boundary.
+- **Verifier A** — dedicated encrypted local Node/ethers signer: `0x282C3a391e767c87E3907d9fCd94FA6107C4123b`. The key is stored locally in the encrypted Genesis keystore and is not the MetaMask funding wallet.
 - **Verifier B** — the existing AWS KMS secp256k1 signer already proven end-to-end by the Genesis integration test.
 - **Verifier C** — fixed Genesis I contingency EOA on a separate physical/mobile device: `0xd5422b7493e65c5b5cbfd70028df2D2ED8A39CDE`.
 
-Important current boundary: Condor's repository proves native BSC transaction signing exists but is production-disabled and does not yet prove an autonomous Genesis attestation signer. Verifier A must therefore be wired to the Genesis signing firewall before launch; merely naming a Condor address is not enough.
+Verifier A now runs through the Genesis objective verification firewall and only signs the internally derived attestation digest. Condor/Rust is not required for Genesis I.
 
-Verifier C cannot authorize a payment alone. The intended normal path is automated A+B once A's restricted signer is live.
+Verifier C cannot authorize a payment alone. The intended normal path is automated A+B.
 
 ## Agent payout and BNB gas
 
@@ -116,28 +116,39 @@ This is read-only. It does not request a key or send a transaction.
 
 ## Deployment preparation
 
-Verifier C is now fixed in the preparation script. Once Verifier A's public address exists:
+Verifier A and Verifier C are now fixed in the preparation script. Verifier B defaults to the already proven Genesis I AWS KMS signer.
+
+To inspect the exact authority constructor without deploying anything:
 
 ```bash
-GENESIS_VERIFIER_A_ADDRESS=0x... \
-GENESIS_SETTLEMENT_DEADLINE=<unix-seconds> \
 npm run mainnet:prepare
 ```
 
-`GENESIS_VERIFIER_C_ADDRESS` remains available only as an explicit override; the default Genesis I C address is the fixed mobile contingency verifier above.
+For the live deployment, use the local MetaMask deployer:
 
-Verifier B defaults to the already proven Genesis I AWS KMS signer.
+```bash
+npm run mainnet:deploy-ui
+```
 
-The first run prints the exact `GenesisVerifierAuthority` constructor arguments. After the authority is deployed and verified, rerun with:
+It compiles the contracts and starts a local-only page at `http://127.0.0.1:4174`. MetaMask remains the transaction signer; the local deployer never receives a private key. It:
+
+- forces BSC mainnet chain ID 56;
+- shows the frozen tender/policy hashes and A/B/C verifier set;
+- estimates deployment gas before each transaction;
+- deploys and verifies `GenesisVerifierAuthority`;
+- computes the settlement deadline as public opening + 21 days;
+- deploys and verifies `GenesisDeliverableEscrow`;
+- prints a deployment report with addresses and transaction hashes.
+
+Funding is deliberately not available from the deployer. The GCC transfer remains a separate step after deployment verification and a fresh fee-aware funding calculation.
+
+`GENESIS_VERIFIER_A_ADDRESS`, `GENESIS_VERIFIER_B_ADDRESS`, and `GENESIS_VERIFIER_C_ADDRESS` remain explicit overrides for controlled recovery/testing. To inspect escrow constructor arguments after an authority exists:
 
 ```bash
 GENESIS_AUTHORITY_ADDRESS=0x... \
-GENESIS_VERIFIER_A_ADDRESS=0x... \
 GENESIS_SETTLEMENT_DEADLINE=<unix-seconds> \
 npm run mainnet:prepare
 ```
-
-That produces the escrow constructor arguments.
 
 ## Funding gate
 
