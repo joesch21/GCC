@@ -3,6 +3,7 @@ const path = require("path");
 const { getAddress, isAddress, parseUnits } = require("ethers");
 
 const GCC_TOKEN = "0x092ac429b9c3450c9909433eb0662c3b7c13cf9a";
+const DEFAULT_VERIFIER_A = "0x282C3a391e767c87E3907d9fCd94FA6107C4123b";
 const DEFAULT_VERIFIER_B = "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6";
 const DEFAULT_VERIFIER_C = "0xd5422b7493e65c5b5cbfd70028df2d2ed8a39cde";
 const ZERO = "0x0000000000000000000000000000000000000000";
@@ -29,7 +30,9 @@ function optionalAddress(name) {
 }
 
 function main() {
-  const verifierA = requiredAddress("GENESIS_VERIFIER_A_ADDRESS");
+  const verifierA = process.env.GENESIS_VERIFIER_A_ADDRESS
+    ? requiredAddress("GENESIS_VERIFIER_A_ADDRESS")
+    : getAddress(DEFAULT_VERIFIER_A);
   const verifierB = process.env.GENESIS_VERIFIER_B_ADDRESS
     ? requiredAddress("GENESIS_VERIFIER_B_ADDRESS")
     : getAddress(DEFAULT_VERIFIER_B);
@@ -43,15 +46,19 @@ function main() {
   const tenderHash = readPinned("tenders/GCC-GENESIS-001.keccak256");
   const policyHash = readPinned("policies/GCC-GENESIS-001.verifier-policy.keccak256");
 
-  const deadlineText = process.env.GENESIS_SETTLEMENT_DEADLINE;
-  if (!deadlineText || !/^\d+$/.test(deadlineText)) {
-    throw new Error("GENESIS_SETTLEMENT_DEADLINE must be the intended Unix settlement deadline (14-day submission window + 7-day grace from public opening)");
-  }
-  const settlementDeadline = BigInt(deadlineText);
-  const now = BigInt(Math.floor(Date.now() / 1000));
-  if (settlementDeadline <= now) throw new Error("GENESIS_SETTLEMENT_DEADLINE must be in the future");
-
   const authorityAddress = optionalAddress("GENESIS_AUTHORITY_ADDRESS");
+  let settlementDeadline = null;
+  if (authorityAddress) {
+    const deadlineText = process.env.GENESIS_SETTLEMENT_DEADLINE;
+    if (!deadlineText || !/^\d+$/.test(deadlineText)) {
+      throw new Error("GENESIS_SETTLEMENT_DEADLINE is required once GENESIS_AUTHORITY_ADDRESS is set");
+    }
+    settlementDeadline = BigInt(deadlineText);
+    const now = BigInt(Math.floor(Date.now() / 1000));
+    if (settlementDeadline <= now) {
+      throw new Error("GENESIS_SETTLEMENT_DEADLINE must be in the future");
+    }
+  }
 
   const output = {
     network: { name: "BNB Smart Chain Mainnet", chainId: 56 },
@@ -63,6 +70,7 @@ function main() {
     },
     verifierProfile: {
       A: verifierA,
+      ASource: process.env.GENESIS_VERIFIER_A_ADDRESS ? "environment override" : "fixed Genesis I encrypted local signer",
       B: verifierB,
       BSource: process.env.GENESIS_VERIFIER_B_ADDRESS ? "environment override" : "existing Genesis I AWS KMS experimental signer",
       C: verifierC,
