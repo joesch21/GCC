@@ -22,7 +22,9 @@
     "mainnet:relayer:create": "node scripts/create-genesis-relayer.js",
     "mainnet:relayer:canary": "node scripts/check-genesis-settlement-relayer.js",
     "mainnet:relayer:run": "node scripts/run-genesis-relayer.js",
-    "mainnet:verification-bundle": "hardhat compile && hardhat run scripts/export-genesis-verification-bundle.js"
+    "mainnet:verification-bundle": "hardhat compile && hardhat run scripts/export-genesis-verification-bundle.js",
+    "mainnet:intake:dry-run": "node scripts/dry-run-genesis-issue.js",
+    "mainnet:intake:run": "node scripts/run-genesis-autonomous.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
