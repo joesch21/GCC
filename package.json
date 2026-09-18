@@ -18,7 +18,10 @@
     "mainnet:deploy-ui": "hardhat compile && node scripts/serve-genesis-mainnet-deployer.js",
     "mainnet:verify": "hardhat run --network bsc scripts/verify-genesis-mainnet.js",
     "mainnet:verify-local": "hardhat run --network bsc scripts/check-genesis-mainnet-bytecode.js",
-    "mainnet:verifier-canary": "node scripts/check-genesis-verifier-canary.js"
+    "mainnet:verifier-canary": "node scripts/check-genesis-verifier-canary.js",
+    "mainnet:relayer:create": "node scripts/create-genesis-relayer.js",
+    "mainnet:relayer:canary": "node scripts/check-genesis-settlement-relayer.js",
+    "mainnet:relayer:run": "node scripts/run-genesis-relayer.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
