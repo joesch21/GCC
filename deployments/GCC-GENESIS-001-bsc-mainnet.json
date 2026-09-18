@@ -54,5 +54,17 @@
     "deploymentReceiptsSuccessful": true,
     "immutableAndPublicBindingsMatch": true,
     "bscscanSourcePublication": "PENDING"
+  },
+  "verifierCanary": {
+    "status": "PASS",
+    "chainId": 56,
+    "verifierA": "0x282C3a391e767c87E3907d9fCd94FA6107C4123b",
+    "verifierB": "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6",
+    "authority": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
+    "authorityAccepted2Of3": true,
+    "transactionSent": false,
+    "fundsMoved": false,
+    "awardDigest": "0x535b74ca346ad5c1fcb553085d42d8cb906e176a7d7979a60d6d22f9571f40d8",
+    "attestationDigest": "0x80e91e01d24cabad0ed09fef2d638485813ce8da75eb62e350a837f5fae829d8"
   }
 }
