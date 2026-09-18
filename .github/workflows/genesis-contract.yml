@@ -56,4 +56,5 @@ jobs:
       - run: node --check scripts/create-genesis-relayer.js
       - run: node --check scripts/check-genesis-settlement-relayer.js
       - run: node --check scripts/run-genesis-relayer.js
+      - run: node --check scripts/export-genesis-verification-bundle.js
       - run: npm test
