@@ -1,7 +1,9 @@
+const { GENESIS_POLICY_VERSION } = require("./configuration");
+
 function createDecisionAuditRecord(config, validatedRequest, digests, decision) {
   return Object.freeze({
     decision,
-    policyVersion: "0.1-draft",
+    policyVersion: GENESIS_POLICY_VERSION,
     chainId: config.chainId,
     verifierAuthorityAddress: config.verifierAuthorityAddress,
     escrowAddress: config.escrowAddress,
