@@ -54,7 +54,7 @@ describe("Genesis Verifier B signing firewall", function () {
       },
       tenderHash,
       policyHash: POLICY_HASH,
-      allowedRewardClasses: ["QUALIFIED_PROPOSAL", "FINALIST", "SELECTED_COMPONENT"],
+      allowedRewardClasses: ["QUALIFIED_PROPOSAL"],
       signerAddress: signer.address,
       maxAwardValidityHorizonSeconds: HORIZON,
       ...overrides,
@@ -63,7 +63,7 @@ describe("Genesis Verifier B signing firewall", function () {
 
   function assessment(overrides = {}) {
     return {
-      assessment_version: "0.1-draft",
+      assessment_version: "0.3-draft",
       tender_hash: tenderHash,
       submission_id: "submission-001",
       deliverable_hash: ethers.keccak256(ethers.toUtf8Bytes("deliverable-001")),
