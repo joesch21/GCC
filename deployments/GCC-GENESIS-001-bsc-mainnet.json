@@ -129,12 +129,40 @@
     "fundingVerification": "PENDING_ONCHAIN_BALANCE_CHECK"
   },
   "intakeBridge": {
-    "status": "IMPLEMENTED_PENDING_LIVE_SYNTHETIC_DRY_RUN",
+    "status": "PUBLIC_DISCOVERY_OPEN_SYNTHETIC_DRY_RUN_PASS",
     "repository": "joesch21/GCC",
     "issueTitlePrefix": "[GCC-GENESIS-001]",
     "recipientBinding": "EVM personal-sign over deterministic tender/submission/deliverable/recipient challenge",
     "sandbox": "Disposable unprivileged Docker container; no host secrets; networked PASS required and network-disabled PASS rejected",
     "canonicalRequest": "Feeds the existing Genesis A+B verifier and bounded relayer path",
-    "humanPerPaymentApproval": false
+    "humanPerPaymentApproval": false,
+    "syntheticDryRun": {
+      "status": "DRY_RUN_PASS",
+      "issue": 33,
+      "synthetic": true,
+      "transactionSent": false,
+      "fundsMoved": false,
+      "artifactHash": "0xbdff07fc7bc18755314687e19fccf23e946be6c480cb220236b735373c15b8f0",
+      "recipient": "0xec76C3cF98Bcb586b9595e9f9ad148f04aE15433",
+      "authorityAccepted2Of3": true,
+      "fundedForAward": true,
+      "settlementSimulationSuccess": true
+    },
+    "publicDiscovery": {
+      "status": "OPEN_EXTERNALLY_VERIFIED",
+      "discoveryUrl": "https://www.goldcondor.info/.well-known/gcc-agent.json",
+      "tenderUrl": "https://www.goldcondor.info/tenders/GCC-GENESIS-001.json",
+      "formalOpeningIso": "2026-09-18T04:00:00.000Z",
+      "submissionClosesIso": "2026-10-02T04:00:00.000Z",
+      "settlementDeadlineIso": "2026-10-09T04:00:00.000Z",
+      "tenderHash": "0x68192a6a21ff53afa698edd0573a6a27f2294e9a8de3a20f41d102e0be3ab86d",
+      "externalVerification": {
+        "provider": "GitHub Actions",
+        "workflow": "Genesis Contract Authority",
+        "runNumber": 79,
+        "conclusion": "success"
+      }
+    },
+    "liveSendMode": "NOT_ENABLED_BY_PUBLICATION_CHANGE"
   }
 }
