@@ -9,7 +9,7 @@ const {
 
 const GENESIS_CHAIN_ID = 56;
 const GENESIS_TENDER_ID = "GCC-GENESIS-001";
-const GENESIS_POLICY_VERSION = "0.1-draft";
+const GENESIS_POLICY_VERSION = "0.3-draft";
 
 const ESCROW_DOMAIN = Object.freeze({
   name: "GCC Genesis Deliverable Escrow",
@@ -228,6 +228,14 @@ function normalizeProductionConfig(config) {
   });
   if (new Set(allowedRewardClasses).size !== allowedRewardClasses.length) {
     throw configurationError("allowedRewardClasses must not contain duplicates");
+  }
+  if (
+    allowedRewardClasses.length !== 1 ||
+    allowedRewardClasses[0] !== "QUALIFIED_PROPOSAL"
+  ) {
+    throw configurationError(
+      "Genesis I permits only QUALIFIED_PROPOSAL under the pinned policy"
+    );
   }
 
   const signerAddress = normalizeAddress(config.signerAddress, "signerAddress");
