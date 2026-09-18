@@ -1,0 +1,41 @@
+{
+  "experiment": "GCC-GENESIS-001",
+  "network": {
+    "name": "BNB Smart Chain Mainnet",
+    "chainId": 56
+  },
+  "gccToken": "0x092ac429b9c3450c9909433eB0662c3b7c13cF9A",
+  "hashes": {
+    "tender": "0x68192a6a21ff53afa698edd0573a6a27f2294e9a8de3a20f41d102e0be3ab86d",
+    "policy": "0xbd63b1ccf943e00788ded499d510365623fb6a0edc2b0c2bba0af037f01a590c"
+  },
+  "verifiers": {
+    "threshold": 2,
+    "A": "0x282C3a391e767c87E3907d9fCd94FA6107C4123b",
+    "B": "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6",
+    "C": "0xd5422b7493e65c5b5cbfd70028df2D2ED8A39CDE"
+  },
+  "authority": {
+    "address": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
+    "transactionHash": "0x27444fe06d918d00820f0ac62fb15fc6542cc9dd7d0969495cc249d22f00ff1b",
+    "localPostDeployVerification": "PASS",
+    "bscscanSourceVerification": "PENDING"
+  },
+  "escrow": {
+    "address": "0x7370A044508AF6a0846FF8c7bd61245BfDe287bA",
+    "transactionHash": "0xa17c8cbfb1917668ad78bd518edc6612d003491d11d667eff8fa57ab52c28097",
+    "verifierAuthority": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
+    "plannedOpeningIso": "2026-09-18T01:38:00.000Z",
+    "settlementDeadlineUnix": "1791509880",
+    "settlementDeadlineIso": "2026-10-09T01:38:00.000Z",
+    "rewardCapRaw": "100000000000000000000",
+    "rewardCapGcc": "100",
+    "localPostDeployVerification": "PASS",
+    "bscscanSourceVerification": "PENDING"
+  },
+  "funding": {
+    "status": "NOT_FUNDED",
+    "targetEscrowBalanceGcc": "100",
+    "note": "Run the live fee-aware planner against the actual funding wallet immediately before funding."
+  }
+}
