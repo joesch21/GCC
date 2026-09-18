@@ -9,3 +9,6 @@ genesis-verifier-a.keystore.json
 
 # Local encrypted Genesis settlement relayer keystore (never commit)
 genesis-relayer.keystore.json
+
+# Locally generated BscScan manual verification artifacts
+verification-bundle/
