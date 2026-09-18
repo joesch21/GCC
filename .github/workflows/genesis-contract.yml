@@ -49,4 +49,6 @@ jobs:
       - run: node --check scripts/serve-genesis-mainnet-deployer.js
       - run: node --check scripts/verify-genesis-mainnet.js
       - run: node --check scripts/check-genesis-mainnet-bytecode.js
+      - run: node --check scripts/check-genesis-verifier-canary.js
+      - run: node --check src/genesisVerifierB/awsKmsSigner.js
       - run: npm test

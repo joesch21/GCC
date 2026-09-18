@@ -19,7 +19,8 @@
     "address": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
     "transactionHash": "0x27444fe06d918d00820f0ac62fb15fc6542cc9dd7d0969495cc249d22f00ff1b",
     "localPostDeployVerification": "PASS",
-    "bscscanSourceVerification": "PENDING"
+    "bscscanSourceVerification": "PENDING",
+    "localBytecodeVerification": "PASS"
   },
   "escrow": {
     "address": "0x7370A044508AF6a0846FF8c7bd61245BfDe287bA",
@@ -31,11 +32,27 @@
     "rewardCapRaw": "100000000000000000000",
     "rewardCapGcc": "100",
     "localPostDeployVerification": "PASS",
-    "bscscanSourceVerification": "PENDING"
+    "bscscanSourceVerification": "PENDING",
+    "localBytecodeVerification": "PASS"
   },
   "funding": {
     "status": "NOT_FUNDED",
     "targetEscrowBalanceGcc": "100",
-    "note": "Run the live fee-aware planner against the actual funding wallet immediately before funding."
+    "note": "Run the live fee-aware planner against the actual funding wallet immediately before funding.",
+    "latestPlanner": {
+      "status": "PASS",
+      "requiredWalletTransferGcc": "102.040816326530612244",
+      "requiredWalletTransferRaw": "102040816326530612244",
+      "expectedDirectEscrowCreditGcc": "100.0",
+      "fundingWalletExcludedFromFee": false,
+      "observedTotalFeePercent": "2"
+    }
+  },
+  "verification": {
+    "localOnChainCheck": "PASS",
+    "runtimeBytecodeMatch": true,
+    "deploymentReceiptsSuccessful": true,
+    "immutableAndPublicBindingsMatch": true,
+    "bscscanSourcePublication": "PENDING"
   }
 }
