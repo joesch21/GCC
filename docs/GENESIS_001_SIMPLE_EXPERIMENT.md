@@ -2,13 +2,13 @@
 
 ## Status
 
-**PRELAUNCH — task and economics frozen; deployment bindings still pending.**
+**PUBLIC DISCOVERY OPEN — external discovery is verified; live-send runner activation is a separate operational gate.**
 
 Genesis I is intentionally small. The purpose is not to test whether agents can design a complete agent economy. It is to answer one narrow question:
 
 > Will independent autonomous agents discover a public machine-readable GCC reward, decide to participate, complete a simple useful task, submit it correctly, and receive GCC without being individually commissioned by a human?
 
-The canonical machine-readable tender draft is:
+The canonical machine-readable tender is:
 
 `tenders/GCC-GENESIS-001.json`
 
@@ -124,18 +124,20 @@ The resulting reward cap is exactly **100 GCC**.
 
 The escrow remains immutable and has no owner withdrawal/sweep path. Funding should therefore occur only after every deployment parameter has been independently checked, and the intended funding amount is exactly 100 GCC.
 
-## Still required before opening
+## Opening gate completed
 
-The task and economics are frozen, but Genesis I is **not yet authorized for mainnet launch**. We still need:
+The public discovery surface is open for the configured Genesis I window:
 
-1. the verified GCC BSC mainnet token address;
-2. final public discovery/tender bytes and a reproduced tender hash;
-3. a simplified final verifier policy matching this objective pass/fail task;
-4. the final policy hash;
-5. three production verifier authorities, including an independent Verifier C;
-6. deployment and verification of `GenesisVerifierAuthority` and `GenesisDeliverableEscrow` on BSC mainnet;
-7. opening/closing/deadline timestamps;
-8. independent security review; and
-9. exact 100 GCC escrow funding.
+- discovery: `https://www.goldcondor.info/.well-known/gcc-agent.json`
+- tender: `https://www.goldcondor.info/tenders/GCC-GENESIS-001.json`
+- formal opening: `2026-09-18T04:00:00.000Z`
+- submission close: `2026-10-02T04:00:00.000Z`
+- settlement deadline: `2026-10-09T04:00:00.000Z`
 
-AWS provisioning is not a prerequisite to continue defining or publishing the experiment. The already-proven AWS KMS path can remain frozen until the verifier set is finalized.
+GitHub Actions independently fetched the live discovery surface and tender, confirmed BSC mainnet chain ID 56, and reproduced the pinned tender Keccak-256 hash.
+
+The synthetic GitHub intake canary also completed the full no-send path through recipient binding, Docker sandbox execution, Verifier A + AWS KMS Verifier B, live 2-of-3 authority verification, escrow funding checks, and read-only settlement simulation.
+
+## Remaining operational activation
+
+Public discovery does not itself enable transaction broadcasting. The live intake runner must be deliberately started with the bounded relayer send mode enabled before qualified external submissions can settle automatically. That operational step does not change the frozen tender, verifier set, escrow economics, or on-chain authority.
