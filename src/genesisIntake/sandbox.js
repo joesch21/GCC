@@ -252,14 +252,13 @@ async function runSandboxArtifact(options) {
     "65534:65534",
     "--tmpfs",
     "/tmp:rw,nosuid,nodev,size=32m",
-    "--add-host",
-    "host.docker.internal:host-gateway",
     "-v",
     directory + ":/work:ro",
     "-w",
     "/work",
   ];
   if (options.discoveryOverride) {
+    args.splice(args.indexOf("-v"), 0, "--add-host", "host.docker.internal:host-gateway");
     args.push("-e", "GCC_DISCOVERY_URL=" + options.discoveryOverride);
   }
   args.push(image, "/bin/sh", "-lc", options.runCommand);
