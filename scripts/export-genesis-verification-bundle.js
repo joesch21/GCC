@@ -2,6 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const hre = require("hardhat");
 
+function canonicalAddress(value) {
+  return hre.ethers.getAddress(String(value).toLowerCase());
+}
+
 const ROOT = path.resolve(__dirname, "..");
 const RECORD_PATH = path.join(
   ROOT,
@@ -65,20 +69,20 @@ async function main() {
   const authority = await exportContract({
     label: "GenesisVerifierAuthority",
     fqn: "contracts/GenesisVerifierAuthority.sol:GenesisVerifierAuthority",
-    address: record.authority.address,
+    address: canonicalAddress(record.authority.address),
     constructorTypes: ["bytes32", "address", "address", "address"],
     constructorValues: [
       record.hashes.policy,
-      record.verifiers.A,
-      record.verifiers.B,
-      record.verifiers.C,
+      canonicalAddress(record.verifiers.A),
+      canonicalAddress(record.verifiers.B),
+      canonicalAddress(record.verifiers.C),
     ],
   });
 
   const escrow = await exportContract({
     label: "GenesisDeliverableEscrow",
     fqn: "contracts/GenesisDeliverableEscrow.sol:GenesisDeliverableEscrow",
-    address: record.escrow.address,
+    address: canonicalAddress(record.escrow.address),
     constructorTypes: [
       "address",
       "address",
@@ -92,8 +96,8 @@ async function main() {
       "uint32",
     ],
     constructorValues: [
-      record.gccToken,
-      record.authority.address,
+      canonicalAddress(record.gccToken),
+      canonicalAddress(record.authority.address),
       record.hashes.tender,
       BigInt(record.escrow.settlementDeadlineUnix),
       hre.ethers.parseUnits("10", 18),
