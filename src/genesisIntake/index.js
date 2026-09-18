@@ -70,7 +70,7 @@ async function evaluateGithubIssue(options) {
   const runner =
     options.sandboxVerifier ||
     ((sandboxOptions) => verifyNetworkedAndOfflineRuns(sandboxOptions));
-  const sandbox = runner({
+  const sandbox = await runner({
     bytes: artifact.bytes,
     deliverableUrl: artifact.finalUrl || fields.deliverable_url,
     runtime: fields.runtime,
