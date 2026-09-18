@@ -3,7 +3,7 @@ const os = require("os");
 const path = require("path");
 const net = require("net");
 const dns = require("dns").promises;
-const { spawnSync } = require("node:child_process");
+const { spawn } = require("node:child_process");
 const { keccak256 } = require("ethers");
 const {
   EXPECTED_OUTPUT,
@@ -220,7 +220,7 @@ function extractJsonOutput(stdout) {
   );
 }
 
-function runSandboxArtifact(options) {
+async function runSandboxArtifact(options) {
   const bytes = options.bytes;
   const deliverableUrl = options.deliverableUrl;
   const image = dockerImageForRuntime(options.runtime);
@@ -264,37 +264,72 @@ function runSandboxArtifact(options) {
   }
   args.push(image, "/bin/sh", "-lc", options.runCommand);
 
-  let result;
-  try {
-    result = spawnSync("docker", args, {
-      encoding: "utf8",
-      timeout: 45000,
-      maxBuffer: 1024 * 1024,
+  return new Promise((resolve, reject) => {
+    let stdout = "";
+    let stderr = "";
+    let timedOut = false;
+    let finished = false;
+
+    const child = spawn("docker", args, {
       env: {
         PATH: process.env.PATH,
         HOME: process.env.HOME,
       },
+      stdio: ["ignore", "pipe", "pipe"],
     });
-  } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
 
-  if (result.error && result.error.code === "ENOENT") {
-    throw intakeError(
-      "GENESIS_INTAKE_DOCKER_UNAVAILABLE",
-      "Docker is required for Genesis intake sandboxing"
-    );
-  }
+    const cleanup = () => {
+      fs.rmSync(directory, { recursive: true, force: true });
+    };
 
-  return Object.freeze({
-    status: result.status,
-    signal: result.signal,
-    stdout: result.stdout || "",
-    stderr: result.stderr || "",
-    timedOut: Boolean(result.error && result.error.code === "ETIMEDOUT"),
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.kill("SIGKILL");
+    }, 45000);
+
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString("utf8");
+      if (stdout.length > 1024 * 1024) child.kill("SIGKILL");
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString("utf8");
+      if (stderr.length > 1024 * 1024) child.kill("SIGKILL");
+    });
+
+    child.once("error", (error) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      cleanup();
+      if (error.code === "ENOENT") {
+        reject(
+          intakeError(
+            "GENESIS_INTAKE_DOCKER_UNAVAILABLE",
+            "Docker is required for Genesis intake sandboxing"
+          )
+        );
+        return;
+      }
+      reject(error);
+    });
+
+    child.once("close", (code, signal) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      cleanup();
+      resolve(
+        Object.freeze({
+          status: code,
+          signal,
+          stdout,
+          stderr,
+          timedOut,
+        })
+      );
+    });
   });
 }
-
 function sourceHasCanonicalDiscoveryReference(bytes) {
   return bytes.toString("utf8").includes(CANONICAL_DISCOVERY_URL);
 }
@@ -305,8 +340,8 @@ function outputLooksLikeSecretRequest(value) {
   );
 }
 
-function verifyNetworkedAndOfflineRuns(options) {
-  const networked = runSandboxArtifact({
+async function verifyNetworkedAndOfflineRuns(options) {
+  const networked = await runSandboxArtifact({
     bytes: options.bytes,
     deliverableUrl: options.deliverableUrl,
     runtime: options.runtime,
@@ -332,7 +367,7 @@ function verifyNetworkedAndOfflineRuns(options) {
   const networkedOutput = extractJsonOutput(networked.stdout);
   assertExpectedOutput(networkedOutput, "sandbox_output");
 
-  const offline = runSandboxArtifact({
+  const offline = await runSandboxArtifact({
     bytes: options.bytes,
     deliverableUrl: options.deliverableUrl,
     runtime: options.runtime,
