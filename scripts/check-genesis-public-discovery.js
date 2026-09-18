@@ -6,6 +6,8 @@ const DISCOVERY_URL =
   "https://www.goldcondor.info/.well-known/gcc-agent.json";
 const TENDER_URL =
   "https://www.goldcondor.info/tenders/GCC-GENESIS-001.json";
+const STATS_URL =
+  "https://www.goldcondor.info/api/genesis-discovery-stats";
 
 function canonical(value) {
   if (Array.isArray(value)) {
@@ -110,6 +112,32 @@ async function main() {
     throw new Error("Genesis I public submission window is not currently open");
   }
 
+  const stats = await fetchJson(STATS_URL);
+  if (!stats.ok || stats.experiment !== "GCC-GENESIS-001") {
+    throw new Error("Genesis discovery stats endpoint is not healthy");
+  }
+  if (
+    !stats.totals ||
+    Number(stats.totals.internalProbe || 0) < 1
+  ) {
+    throw new Error(
+      "Persistent Genesis discovery stats did not record the readiness probe"
+    );
+  }
+  const privacy = stats.privacy || {};
+  for (const key of [
+    "storesIp",
+    "storesWallet",
+    "storesCookie",
+    "storesReferrer",
+    "storesRawUserAgent",
+    "storesQueryString",
+  ]) {
+    if (privacy[key] !== false) {
+      throw new Error("Genesis discovery stats privacy contract failed: " + key);
+    }
+  }
+
   console.log(
     JSON.stringify(
       {
@@ -122,6 +150,15 @@ async function main() {
         opensAt: discovery.opens_at,
         closesAt: discovery.submission_closes_at,
         settlementDeadline: discovery.settlement_deadline,
+        persistentStats: {
+          status: "PASS",
+          url: STATS_URL,
+          totalRequests: Number(stats.totals.all || 0),
+          externalRequests: Number(stats.totals.external || 0),
+          internalProbeRequests: Number(stats.totals.internalProbe || 0),
+          firstSeenAt: stats.firstSeenAt || null,
+          lastSeenAt: stats.lastSeenAt || null,
+        },
       },
       null,
       2
@@ -130,12 +167,24 @@ async function main() {
 }
 
 main().catch((error) => {
+  const message = error.message || String(error);
   console.error(
     JSON.stringify({
       status: "FAIL",
       externallyDiscoverable: false,
-      message: error.message || String(error),
+      message,
     })
   );
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try {
+      fs.appendFileSync(
+        process.env.GITHUB_STEP_SUMMARY,
+        "## Genesis external verification failure\n\n" +
+          "text: " + message + "\n"
+      );
+    } catch (_summaryError) {
+      // Summary emission is diagnostic only.
+    }
+  }
   process.exitCode = 1;
 });
