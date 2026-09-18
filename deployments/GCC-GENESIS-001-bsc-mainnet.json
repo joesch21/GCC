@@ -4,7 +4,7 @@
     "name": "BNB Smart Chain Mainnet",
     "chainId": 56
   },
-  "gccToken": "0x092ac429b9c3450c9909433eB0662c3b7c13cF9A",
+  "gccToken": "0x092aC429b9c3450c9909433eB0662c3b7c13cF9A",
   "hashes": {
     "tender": "0x68192a6a21ff53afa698edd0573a6a27f2294e9a8de3a20f41d102e0be3ab86d",
     "policy": "0xbd63b1ccf943e00788ded499d510365623fb6a0edc2b0c2bba0af037f01a590c"
