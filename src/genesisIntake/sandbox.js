@@ -228,6 +228,7 @@ function runSandboxArtifact(options) {
   const directory = fs.mkdtempSync(
     path.join(os.tmpdir(), "gcc-genesis-intake-")
   );
+  fs.chmodSync(directory, 0o755);
   const filename = artifactFilename(deliverableUrl);
   fs.writeFileSync(path.join(directory, filename), bytes, { mode: 0o444 });
 
