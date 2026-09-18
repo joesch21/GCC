@@ -16,7 +16,8 @@
     "verifier-a:create": "node scripts/create-genesis-verifier-a.js",
     "verifier-a:run": "node scripts/run-genesis-verifier-a.js",
     "mainnet:deploy-ui": "hardhat compile && node scripts/serve-genesis-mainnet-deployer.js",
-    "mainnet:verify": "hardhat run --network bsc scripts/verify-genesis-mainnet.js"
+    "mainnet:verify": "hardhat run --network bsc scripts/verify-genesis-mainnet.js",
+    "mainnet:verify-local": "hardhat run --network bsc scripts/check-genesis-mainnet-bytecode.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
