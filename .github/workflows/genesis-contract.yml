@@ -47,4 +47,5 @@ jobs:
       - run: npm run tender:verify
       - run: npm run compile
       - run: node --check scripts/serve-genesis-mainnet-deployer.js
+      - run: node --check scripts/verify-genesis-mainnet.js
       - run: npm test
