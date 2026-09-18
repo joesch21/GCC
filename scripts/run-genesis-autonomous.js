@@ -22,6 +22,9 @@ const {
   postIssueComment,
 } = require("../src/genesisIntake/github");
 const {
+  checkGenesisLiveReadiness,
+} = require("../src/genesisIntake/liveReadiness");
+const {
   createGenesisVerifierAFromEnvironment,
 } = require("../src/genesisVerifierA");
 const {
@@ -213,6 +216,14 @@ async function main() {
   }
 
   const sendEnabled = bool(process.env.GENESIS_RELAYER_SEND);
+  if (
+    sendEnabled &&
+    process.env.GENESIS_LIVE_ACK !== "GCC-GENESIS-001-LIVE"
+  ) {
+    throw new Error(
+      "LIVE_SEND requires GENESIS_LIVE_ACK=GCC-GENESIS-001-LIVE"
+    );
+  }
   const pollMs = Number(process.env.GENESIS_INTAKE_POLL_MS || "60000");
   if (!Number.isSafeInteger(pollMs) || pollMs < 10000) {
     throw new Error("GENESIS_INTAKE_POLL_MS must be an integer >= 10000");
@@ -230,6 +241,9 @@ async function main() {
 
   const verifiers = await createVerifierRuntime(record);
   const relayer = await createRelayerRuntime(record, sendEnabled);
+  const liveReadiness = sendEnabled
+    ? await checkGenesisLiveReadiness({ provider, record })
+    : null;
   const state = loadState();
   const window = submissionWindow(record);
 
@@ -249,6 +263,7 @@ async function main() {
       pollMs,
       sandbox: "docker-unprivileged-no-host-secrets",
       arbitraryTransactions: false,
+      liveReadiness,
     })
   );
 

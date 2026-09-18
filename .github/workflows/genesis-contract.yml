@@ -65,6 +65,8 @@ jobs:
       - run: node --check scripts/check-genesis-intake-sandbox.js
       - run: node --check scripts/create-genesis-synthetic-issue.js
       - run: node --check scripts/check-genesis-public-discovery.js
+      - run: node --check src/genesisIntake/liveReadiness.js
+      - run: node --check scripts/check-genesis-live-readiness.js
       - run: npm run mainnet:public-discovery:verify
       - run: npm run intake:sandbox-canary
       - run: node --check scripts/export-genesis-verification-bundle.js
