@@ -23,22 +23,22 @@
     "localBytecodeVerification": "PASS"
   },
   "escrow": {
-    "address": "0x7370A044508AF6a0846FF8c7bd61245BfDe287bA",
-    "transactionHash": "0xa17c8cbfb1917668ad78bd518edc6612d003491d11d667eff8fa57ab52c28097",
+    "address": "0x8e834961EeC8F1a7048964B28E8156A211993E12",
+    "transactionHash": "0x3e21f8a58930a407c24abca4097416cbf579b7f7f5fef31f9b532f4fe14b54af",
     "verifierAuthority": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
-    "plannedOpeningIso": "2026-09-18T01:38:00.000Z",
-    "settlementDeadlineUnix": "1791509880",
-    "settlementDeadlineIso": "2026-10-09T01:38:00.000Z",
+    "plannedOpeningIso": "2026-09-18T04:00:00.000Z",
+    "settlementDeadlineUnix": "1791518400",
+    "settlementDeadlineIso": "2026-10-09T04:00:00.000Z",
     "rewardCapRaw": "100000000000000000000",
     "rewardCapGcc": "100",
     "localPostDeployVerification": "PASS",
     "bscscanSourceVerification": "PENDING",
-    "localBytecodeVerification": "PASS"
+    "localBytecodeVerification": "PENDING"
   },
   "funding": {
     "status": "NOT_FUNDED",
     "targetEscrowBalanceGcc": "100",
-    "note": "Run the live fee-aware planner against the actual funding wallet immediately before funding.",
+    "note": "Replacement escrow is unfunded. Rerun local bytecode/binding verification and the live fee-aware funding planner before any GCC transfer.",
     "latestPlanner": {
       "status": "PASS",
       "requiredWalletTransferGcc": "102.040816326530612244",
@@ -49,14 +49,15 @@
     }
   },
   "verification": {
-    "localOnChainCheck": "PASS",
-    "runtimeBytecodeMatch": true,
-    "deploymentReceiptsSuccessful": true,
-    "immutableAndPublicBindingsMatch": true,
+    "authorityLocalOnChainCheck": "PASS",
+    "replacementEscrowLocalOnChainCheck": "PENDING",
+    "replacementEscrowRuntimeBytecodeMatch": null,
+    "replacementEscrowDeploymentReceiptSuccessful": null,
+    "replacementEscrowImmutableAndPublicBindingsMatch": null,
     "bscscanSourcePublication": "PENDING"
   },
   "verifierCanary": {
-    "status": "PASS",
+    "status": "SUPERSEDED_WITH_ESCROW",
     "chainId": 56,
     "verifierA": "0x282C3a391e767c87E3907d9fCd94FA6107C4123b",
     "verifierB": "0x2d6D19751d48bD8e6008eE04E70f64AD17f759A6",
@@ -65,10 +66,11 @@
     "transactionSent": false,
     "fundsMoved": false,
     "awardDigest": "0x535b74ca346ad5c1fcb553085d42d8cb906e176a7d7979a60d6d22f9571f40d8",
-    "attestationDigest": "0x80e91e01d24cabad0ed09fef2d638485813ce8da75eb62e350a837f5fae829d8"
+    "attestationDigest": "0x80e91e01d24cabad0ed09fef2d638485813ce8da75eb62e350a837f5fae829d8",
+    "note": "PASS was against the prior escrow domain. Rerun against the replacement escrow before funding."
   },
   "relayerCanary": {
-    "status": "PASS",
+    "status": "SUPERSEDED_WITH_ESCROW",
     "chainId": 56,
     "transactionSent": false,
     "fundsMoved": false,
@@ -83,6 +85,24 @@
       "attempted": false,
       "success": false,
       "reason": "ESCROW_NOT_FUNDED_FOR_AWARD"
+    },
+    "note": "PASS was against the prior escrow domain. Rerun against the replacement escrow before funding."
+  },
+  "priorEscrows": [
+    {
+      "address": "0x7370A044508AF6a0846FF8c7bd61245BfDe287bA",
+      "transactionHash": "0xa17c8cbfb1917668ad78bd518edc6612d003491d11d667eff8fa57ab52c28097",
+      "verifierAuthority": "0x00E462098E41980C81B0ccB45F5fAb7c81F13FDb",
+      "plannedOpeningIso": "2026-09-18T01:38:00.000Z",
+      "settlementDeadlineUnix": "1791509880",
+      "settlementDeadlineIso": "2026-10-09T01:38:00.000Z",
+      "rewardCapRaw": "100000000000000000000",
+      "rewardCapGcc": "100",
+      "localPostDeployVerification": "PASS",
+      "bscscanSourceVerification": "PENDING",
+      "localBytecodeVerification": "PASS",
+      "status": "SUPERSEDED_UNFUNDED",
+      "supersededReason": "Public opening was not activated at the originally planned time. Replaced before funding to preserve the full published 14-day submission window plus 7-day settlement grace."
     }
-  }
+  ]
 }
