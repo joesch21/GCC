@@ -66,5 +66,23 @@
     "fundsMoved": false,
     "awardDigest": "0x535b74ca346ad5c1fcb553085d42d8cb906e176a7d7979a60d6d22f9571f40d8",
     "attestationDigest": "0x80e91e01d24cabad0ed09fef2d638485813ce8da75eb62e350a837f5fae829d8"
+  },
+  "relayerCanary": {
+    "status": "PASS",
+    "chainId": 56,
+    "transactionSent": false,
+    "fundsMoved": false,
+    "authorityAccepted2Of3": true,
+    "awardDigest": "0x5f3eed8b6ff6d3477cc5f34872cc5ff28f9e8846f7f38918721de3ff097fbfeb",
+    "attestationDigest": "0xfb4210bdbd9b3df895f7574a756ea2b3e3858152f1512d9225f82ea1f778cda0",
+    "awardId": "0x52d2111ebd9af62623f0bf936d54c7ae1b51abdf3bb8a6c61ac3d730426c46e6",
+    "escrowBalanceRaw": "0",
+    "fundingShortfallRaw": "100000000000000000000",
+    "fundedForAward": false,
+    "settlementSimulation": {
+      "attempted": false,
+      "success": false,
+      "reason": "ESCROW_NOT_FUNDED_FOR_AWARD"
+    }
   }
 }
