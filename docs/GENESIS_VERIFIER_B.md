@@ -4,7 +4,7 @@
 
 This is a production-oriented signing firewall implementation. It does not
 deploy contracts, call AWS, create keys, or authorize a mainnet deployment.
-The current Genesis verifier policy remains **DRAFT** (`0.1-draft`).
+The current Genesis verifier policy remains **DRAFT** (`0.3-draft`).
 
 ## Security boundary
 

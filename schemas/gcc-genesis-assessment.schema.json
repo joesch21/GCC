@@ -20,7 +20,7 @@
   "properties": {
     "assessment_version": {
       "type": "string",
-      "const": "0.1-draft"
+      "const": "0.3-draft"
     },
     "tender_hash": {
       "type": "string",

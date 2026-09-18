@@ -6,7 +6,7 @@ This document defines the proposed AWS-native production boundary for
 Genesis Verifier B. It is a design and CloudFormation validation artifact: it
 does not create AWS resources, call AWS mutation APIs, alter the existing
 test-only PoC KMS key, deploy a Lambda, or authorize a BSC mainnet deployment.
-The Genesis policy remains **DRAFT** (`0.1-draft`).
+The Genesis policy remains **DRAFT** (`0.3-draft`).
 
 Verifier B is one of three required cryptographic domains. Condor and Tower
 together remain only **one separate domain**, not two independent domains. An
