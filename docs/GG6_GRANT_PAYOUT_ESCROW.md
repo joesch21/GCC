@@ -114,3 +114,34 @@ Do not deploy or fund until all of the following are explicit:
 
 GG-6 code preparation does not itself deploy a contract, fund an address, sign
 an authorization, or send a blockchain transaction.
+
+
+## Fee-aware mainnet funding
+
+GCC is fee-bearing unless either the sender or recipient is excluded from fee. The GG-6 escrow therefore must not be funded by simply copying the nominal payout shortfall.
+
+Use the read-only planner immediately before any human funding transfer:
+
+```bash
+npm run mainnet:gg6-plan-funding -- <funding-wallet> <recipient-wallet> <pending-gcc>
+```
+
+For the first canary:
+
+```bash
+npm run mainnet:gg6-plan-funding -- \
+  0x0b36B0495c5e7899648D731d7b88d6Ffd3915184 \
+  0x0C5c77F31CD27A4ADbf15a690E99CC50437442de \
+  1
+```
+
+The planner verifies BSC mainnet chain 56, canonical GCC, the deployed GG-6 escrow, immutable human authority and relayer bindings, current GCC fee rates, fee-exemption status for the funding wallet, escrow and recipient, and live balances.
+
+It reports two separate semantics:
+
+- **Funding:** the minimum gross wallet transfer required for the escrow to receive at least the current on-chain shortfall after GCC fees.
+- **Payout:** the expected direct recipient credit from the already-signed nominal payout amount.
+
+The planner is read-only. It never signs, changes fee exemptions, changes token fees, funds the escrow, or broadcasts a transaction.
+
+If GCC token ownership is not renounced, fee settings or fee exclusions remain mutable. Re-run the planner immediately before funding and again before payout.
