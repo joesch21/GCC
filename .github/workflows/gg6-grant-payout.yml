@@ -10,6 +10,7 @@ on:
       - "test/Gg6FundingPlan.test.js"
       - "src/gg6FundingPlan.js"
       - "scripts/plan-gg6-funding.js"
+      - "scripts/serve-gg6-canary-signer.js"
       - "package.json"
       - "docs/GG6_GRANT_PAYOUT_ESCROW.md"
       - ".github/workflows/gg6-grant-payout.yml"
@@ -22,6 +23,7 @@ on:
       - "test/Gg6FundingPlan.test.js"
       - "src/gg6FundingPlan.js"
       - "scripts/plan-gg6-funding.js"
+      - "scripts/serve-gg6-canary-signer.js"
       - "package.json"
       - "docs/GG6_GRANT_PAYOUT_ESCROW.md"
       - ".github/workflows/gg6-grant-payout.yml"
@@ -46,6 +48,8 @@ jobs:
         run: npx hardhat test test/Gg6FundingPlan.test.js
       - name: Syntax-check GG-6 fee-aware funding planner
         run: node --check scripts/plan-gg6-funding.js
+      - name: Syntax-check exact GG-6 canary signing UI
+        run: node --check scripts/serve-gg6-canary-signer.js
       - name: Preserve Genesis escrow contract
         run: npx hardhat test test/GenesisDeliverableEscrow.test.js
       - name: Fail if bounded payout contract adds dangerous authority
