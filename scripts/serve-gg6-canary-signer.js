@@ -303,16 +303,26 @@ async function connect(){
   await ensureBsc();
   await window.ethereum.request({method:"eth_requestAccounts"});
   provider=new ethers.BrowserProvider(window.ethereum);
-  signer=await provider.getSigner();
-  account=await signer.getAddress();
+  const candidateSigner=await provider.getSigner();
+  const candidateAccount=await candidateSigner.getAddress();
   const network=await provider.getNetwork();
   if(network.chainId!==56n) throw new Error("Wallet is not on BSC mainnet.");
-  if(!same(account,pkg.humanAuthority)){
+  if(!same(candidateAccount,pkg.humanAuthority)){
     throw new Error("Connected wallet is not the immutable GG-6 human authority.");
   }
-  const code=await provider.getCode(account);
-  if(code!=="0x") throw new Error("Canary signer currently expects the configured human authority to be an EOA.");
-  show("wallet",{status:"PASS",address:account,chainId:56,role:"GG6_HUMAN_AUTHORITY"});
+  const code=await provider.getCode(candidateAccount);
+  signer=candidateSigner;
+  account=candidateAccount;
+  show("wallet",{
+    status:"PASS",
+    address:account,
+    chainId:56,
+    role:"GG6_HUMAN_AUTHORITY",
+    accountCodePresent:code!=="0x",
+    note:code!=="0x"
+      ?"Authority has on-chain code. Local ECDSA recovery is not sufficient proof of contract acceptance; bounded relayer dry-run is required."
+      :"Authority has no on-chain code. Bounded relayer dry-run is still required before broadcast."
+  });
   updateSign();
 }
 
@@ -376,7 +386,7 @@ async function signExact(){
   };
 
   show("signLog",{
-    status:"SIGNATURE_VERIFIED_LOCALLY",
+    status:"SIGNATURE_RECOVERED_LOCALLY",
     signer:recovered,
     digest,
     transactionSent:false,
