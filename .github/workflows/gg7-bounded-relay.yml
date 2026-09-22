@@ -1,0 +1,49 @@
+name: GG-7 Bounded Grant Relay CI
+
+on:
+  push:
+    branches:
+      - agent/gg7-bounded-relay-service
+    paths:
+      - "src/gg7RelayCore.js"
+      - "scripts/serve-gg7-grant-relayer.js"
+      - "test/Gg7BoundedRelay.test.js"
+      - "docs/GG7_ONE_CLICK_RELAY.md"
+      - "package.json"
+      - ".github/workflows/gg7-bounded-relay.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/gg7RelayCore.js"
+      - "scripts/serve-gg7-grant-relayer.js"
+      - "test/Gg7BoundedRelay.test.js"
+      - "docs/GG7_ONE_CLICK_RELAY.md"
+      - "package.json"
+      - ".github/workflows/gg7-bounded-relay.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --ignore-scripts
+      - run: node --check src/gg7RelayCore.js
+      - run: node --check scripts/serve-gg7-grant-relayer.js
+      - run: npx hardhat test test/Gg7BoundedRelay.test.js
+      - name: Preserve GG-6 escrow safety
+        run: npx hardhat test test/GrantPayoutEscrow.test.js
+      - name: Fail if GG-7 exposes raw-key or arbitrary-transaction paths
+        run: |
+          ! grep -E "eth_sendRawTransaction|privateKey|function execute|delegatecall|selfdestruct" scripts/serve-gg7-grant-relayer.js src/gg7RelayCore.js
+          grep -q "server.listen(SOCKET_PATH" scripts/serve-gg7-grant-relayer.js
+          grep -q "GG7_RELAYER_PASSWORD environment variable is forbidden" scripts/serve-gg7-grant-relayer.js
+          grep -q 'settle(Payout,bytes)' src/gg7RelayCore.js
