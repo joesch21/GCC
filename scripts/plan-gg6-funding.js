@@ -17,9 +17,9 @@ const {
 
 const RPC_URL = process.env.BSC_RPC_URL || "https://bsc-dataseed.binance.org/";
 const GCC = getAddress("0x092ac429b9c3450c9909433eb0662c3b7c13cf9a");
-const GG6_ESCROW = getAddress("0xca458394e8C3137cE4984bDac6E615d08E2482F6");
-const GG6_HUMAN_AUTHORITY = getAddress("0x0b36B0495c5e7899648D731d7b88d6Ffd3915184");
-const GG6_RELAYER = getAddress("0x381c2939c943C52D9260B0c635d2FD7B17FB1C21");
+const GG6_ESCROW = getAddress("0xca458394e8c3137ce4984bdac6e615d08e2482f6");
+const GG6_HUMAN_AUTHORITY = getAddress("0x0b36b0495c5e7899648d731d7b88d6ffd3915184");
+const GG6_RELAYER = getAddress("0x381c2939c943c52d9260b0c635d2fd7b17fb1c21");
 const ZERO = "0x0000000000000000000000000000000000000000";
 
 const TOKEN_ABI = [
