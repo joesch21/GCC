@@ -32,7 +32,8 @@
     "mainnet:gg6-relayer:run": "node scripts/run-gg6-grant-relayer.js",
     "mainnet:gg6-deploy-ui": "hardhat compile && node scripts/serve-gg6-mainnet-deployer.js",
     "mainnet:gg6-verify": "hardhat run --network bsc scripts/verify-gg6-mainnet.js",
-    "mainnet:gg6-plan-funding": "node scripts/plan-gg6-funding.js"
+    "mainnet:gg6-plan-funding": "node scripts/plan-gg6-funding.js",
+    "mainnet:gg6-canary-sign-ui": "node scripts/serve-gg6-canary-signer.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
