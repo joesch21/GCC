@@ -1,0 +1,21 @@
+{
+  "schema": "gcc.gg6_grant_payout_deployment.v1",
+  "network": {
+    "name": "BNB Smart Chain Mainnet",
+    "chainId": 56
+  },
+  "gccToken": "0x092aC429b9c3450c9909433eB0662c3b7c13cF9A",
+  "humanAuthority": "0x0b36B0495c5e7899648D731d7b88d6Ffd3915184",
+  "relayer": "0x381c2939c943C52D9260B0c635d2FD7B17FB1C21",
+  "escrow": {
+    "address": "0xca458394e8C3137cE4984bDac6E615d08E2482F6",
+    "transactionHash": "0x23d8337e7aee4fc3b813e1af0c207594432a42e8663410b897379630ae6c2e04",
+    "initialGccBalanceRaw": "0",
+    "initialTotalPaidRaw": "0",
+    "localPostDeployVerification": "PASS",
+    "bscscanSourceVerification": "PENDING"
+  },
+  "sourceCommit": "a3574b55b7a5594de85c43ac45e1da9129b86753",
+  "toolingCommit": "1131cc47f8abdbc5f4122df9f5c073a3d69f53cb",
+  "deployedAt": "2026-09-22T19:14:48.241Z"
+}
