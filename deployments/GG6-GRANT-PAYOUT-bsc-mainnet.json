@@ -13,7 +13,9 @@
     "initialGccBalanceRaw": "0",
     "initialTotalPaidRaw": "0",
     "localPostDeployVerification": "PASS",
-    "bscscanSourceVerification": "PENDING"
+    "bscscanSourceVerification": "VERIFIED",
+    "bscscanVerificationMethod": "BscScan Standard-Json-Input manual verification",
+    "bscscanVerificationEvidence": "Successfully generated matching Bytecode and ABI for Contract Address"
   },
   "sourceCommit": "a3574b55b7a5594de85c43ac45e1da9129b86753",
   "toolingCommit": "1131cc47f8abdbc5f4122df9f5c073a3d69f53cb",
