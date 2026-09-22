@@ -145,3 +145,34 @@ It reports two separate semantics:
 The planner is read-only. It never signs, changes fee exemptions, changes token fees, funds the escrow, or broadcasts a transaction.
 
 If GCC token ownership is not renounced, fee settings or fee exclusions remain mutable. Re-run the planner immediately before funding and again before payout.
+
+
+## Exact synthetic-canary human signing
+
+For the first 1 GCC mainnet canary, use the dedicated local-only signer. It is pinned to:
+
+- escrow `0xca458394e8C3137cE4984bDac6E615d08E2482F6`;
+- human authority `0x0b36B0495c5e7899648D731d7b88d6Ffd3915184`;
+- recipient `0x0C5c77F31CD27A4ADbf15a690E99CC50437442de`;
+- nominal amount `1 GCC`;
+- transfer-material hash `0x6a7c3bfaf1b6eea3c984285ac501f7cac79e7bfc426837c5ce075c2154705462`.
+
+Generate a fresh readiness report from Tower with a 30-minute authorization TTL:
+
+```bash
+cd /home/joseph/Tower/backend
+TOWER_GRANT_REGISTRY_ROOT=/var/lib/tower/gcc-agent-grants \
+GG6_AUTHORIZATION_TTL_SECONDS=1800 \
+npm run --silent mainnet:gg6-readiness > /tmp/gg6-canary-readiness.json
+```
+
+Then from the GCC repository:
+
+```bash
+GG6_READINESS_FILE=/tmp/gg6-canary-readiness.json \
+npm run mainnet:gg6-canary-sign-ui
+```
+
+Open `http://127.0.0.1:4177`, connect the immutable human-authority wallet, review the exact typed data, tick the confirmation, and sign.
+
+The page locally verifies the recovered signer and digest and displays a bounded relayer request. It does not POST the signature to the server, does not receive a private key, and cannot broadcast a transaction.
