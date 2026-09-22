@@ -1,0 +1,47 @@
+name: GG-7 Runtime Activation Tooling CI
+
+on:
+  push:
+    branches:
+      - ops/gg7-runtime-activation
+    paths:
+      - "scripts/install-gg7-relay-service.sh"
+      - "systemd/gcc-gg7-grant-relayer.service"
+      - "docs/GG7_RUNTIME_ACTIVATION.md"
+      - ".github/workflows/gg7-runtime-activation.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/install-gg7-relay-service.sh"
+      - "systemd/gcc-gg7-grant-relayer.service"
+      - "docs/GG7_RUNTIME_ACTIVATION.md"
+      - ".github/workflows/gg7-runtime-activation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell syntax
+        run: bash -n scripts/install-gg7-relay-service.sh
+      - name: Preserve GG-7 authority boundaries
+        run: |
+          grep -q 'GG7_EXPECTED_SOURCE_SHA is required' scripts/install-gg7-relay-service.sh
+          grep -q 'GG7_RELAYER_LIVE=1' scripts/install-gg7-relay-service.sh
+          grep -q 'LoadCredential=gg7-relayer-password:' systemd/gcc-gg7-grant-relayer.service
+          grep -q 'User=gcc-gg7-relay' systemd/gcc-gg7-grant-relayer.service
+          grep -q 'Group=tower-gg7' systemd/gcc-gg7-grant-relayer.service
+          grep -q 'ProtectSystem=strict' systemd/gcc-gg7-grant-relayer.service
+          grep -q 'CapabilityBoundingSet=' systemd/gcc-gg7-grant-relayer.service
+          ! grep -E 'GG7_RELAYER_PASSWORD=' systemd/gcc-gg7-grant-relayer.service
+          ! grep -E 'privateKey|mnemonic|eth_sendRawTransaction' scripts/install-gg7-relay-service.sh
+      - name: Preserve GG-7 relay source tests
+        run: |
+          npm install --ignore-scripts
+          npx hardhat test test/Gg7BoundedRelay.test.js
