@@ -1,0 +1,45 @@
+name: GG-6 Grant Payout Escrow CI
+
+on:
+  push:
+    branches:
+      - agent/gg6-grant-payout-escrow
+    paths:
+      - "contracts/GrantPayoutEscrow.sol"
+      - "test/GrantPayoutEscrow.test.js"
+      - "docs/GG6_GRANT_PAYOUT_ESCROW.md"
+      - ".github/workflows/gg6-grant-payout.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "contracts/GrantPayoutEscrow.sol"
+      - "test/GrantPayoutEscrow.test.js"
+      - "docs/GG6_GRANT_PAYOUT_ESCROW.md"
+      - ".github/workflows/gg6-grant-payout.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx hardhat compile
+      - run: npx hardhat test test/GrantPayoutEscrow.test.js
+      - name: Preserve Genesis escrow contract
+        run: npx hardhat test test/GenesisDeliverableEscrow.test.js
+      - name: Fail if bounded payout contract adds dangerous authority
+        run: |
+          ! grep -E "delegatecall|selfdestruct|tx\.origin|\.call\{|function sweep|function upgrade|function execute\(" contracts/GrantPayoutEscrow.sol
+          grep -q "REQUIRED_CHAIN_ID = 56" contracts/GrantPayoutEscrow.sol
+          grep -q "RelayerOnly" contracts/GrantPayoutEscrow.sol
+          grep -q "InvalidHumanAuthorization" contracts/GrantPayoutEscrow.sol
