@@ -1,0 +1,20 @@
+{
+  "schema": "gcc.gg6_grant_payout_deployment.v1",
+  "network": {
+    "name": "BNB Smart Chain Mainnet",
+    "chainId": 56
+  },
+  "gccToken": "0x092aC429b9c3450c9909433eB0662c3b7c13cF9A",
+  "humanAuthority": "REPLACE_WITH_SINGLE_CONDOR_AUTHORITY_ADDRESS",
+  "relayer": "0x381c2939c943C52D9260B0c635d2FD7B17FB1C21",
+  "escrow": {
+    "address": "REPLACE_AFTER_DEPLOYMENT",
+    "transactionHash": "REPLACE_AFTER_DEPLOYMENT",
+    "initialGccBalanceRaw": "0",
+    "initialTotalPaidRaw": "0",
+    "localPostDeployVerification": "PENDING",
+    "bscscanSourceVerification": "PENDING"
+  },
+  "sourceCommit": "a3574b55b7a5594de85c43ac45e1da9129b86753",
+  "deployedAt": "REPLACE_AFTER_DEPLOYMENT"
+}

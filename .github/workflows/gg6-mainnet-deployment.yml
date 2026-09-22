@@ -1,0 +1,48 @@
+name: GG-6 Mainnet Deployment Tooling CI
+
+on:
+  push:
+    branches:
+      - agent/gg6-mainnet-deployment
+    paths:
+      - "scripts/serve-gg6-mainnet-deployer.js"
+      - "scripts/verify-gg6-mainnet.js"
+      - "deployments/GG6-GRANT-PAYOUT-bsc-mainnet.template.json"
+      - "docs/GG6_MAINNET_DEPLOYMENT.md"
+      - "package.json"
+      - ".github/workflows/gg6-mainnet-deployment.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/serve-gg6-mainnet-deployer.js"
+      - "scripts/verify-gg6-mainnet.js"
+      - "deployments/GG6-GRANT-PAYOUT-bsc-mainnet.template.json"
+      - "docs/GG6_MAINNET_DEPLOYMENT.md"
+      - "package.json"
+      - ".github/workflows/gg6-mainnet-deployment.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npx hardhat compile
+      - run: npx hardhat test test/GrantPayoutEscrow.test.js
+      - run: node --check scripts/serve-gg6-mainnet-deployer.js
+      - run: node --check scripts/verify-gg6-mainnet.js
+      - name: Validate frozen mainnet bindings
+        run: |
+          grep -q "0x092aC429b9c3450c9909433eB0662c3b7c13cF9A" scripts/serve-gg6-mainnet-deployer.js
+          grep -q "0x381c2939c943C52D9260B0c635d2FD7B17FB1C21" scripts/serve-gg6-mainnet-deployer.js
+          grep -q "chainId: 56" scripts/serve-gg6-mainnet-deployer.js
+          grep -q "bscscanSourceVerification" scripts/verify-gg6-mainnet.js
