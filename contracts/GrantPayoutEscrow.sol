@@ -45,7 +45,6 @@ contract GrantPayoutEscrow is EIP712, ReentrancyGuard {
     error PayoutExpired();
     error PayoutAlreadyPaid(bytes32 payoutId);
     error InvalidHumanAuthorization();
-    error NativeAssetNotAccepted();
 
     event GrantPayoutEscrowConfigured(
         address indexed gccToken,
@@ -164,7 +163,4 @@ contract GrantPayoutEscrow is EIP712, ReentrancyGuard {
         return pendingAmount > balance ? pendingAmount - balance : 0;
     }
 
-    receive() external payable {
-        revert NativeAssetNotAccepted();
-    }
 }
