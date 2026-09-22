@@ -1,0 +1,42 @@
+[Unit]
+Description=GCC GG-7 bounded grant payout relayer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gcc-gg7-relay
+Group=tower-gg7
+WorkingDirectory=/var/lib/gcc-gg7-relay/app
+ExecStart=/usr/bin/node scripts/serve-gg7-grant-relayer.js
+EnvironmentFile=/etc/gcc/gg7/relay.env
+LoadCredential=gg7-relayer-password:/etc/gcc/credentials/gg7-relayer-password
+RuntimeDirectory=gcc
+RuntimeDirectoryMode=0750
+RuntimeDirectoryPreserve=no
+UMask=0027
+Restart=on-failure
+RestartSec=2
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+RemoveIPC=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/run/gcc
+ReadOnlyPaths=/var/lib/gcc-gg7-relay/app /etc/gcc/gg7
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target
