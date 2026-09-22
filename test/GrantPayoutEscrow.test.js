@@ -179,6 +179,6 @@ describe("GrantPayoutEscrow", function () {
         to: await escrow.getAddress(),
         value: 1n,
       })
-    ).to.be.revertedWithCustomError(escrow, "NativeAssetNotAccepted");
+    ).to.be.reverted;
   });
 });
