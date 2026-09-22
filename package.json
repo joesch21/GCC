@@ -29,7 +29,9 @@
     "mainnet:intake:synthetic-issue:create": "node scripts/create-genesis-synthetic-issue.js",
     "mainnet:public-discovery:verify": "node scripts/check-genesis-public-discovery.js",
     "mainnet:live-readiness": "node scripts/check-genesis-live-readiness.js",
-    "mainnet:gg6-relayer:run": "node scripts/run-gg6-grant-relayer.js"
+    "mainnet:gg6-relayer:run": "node scripts/run-gg6-grant-relayer.js",
+    "mainnet:gg6-deploy-ui": "hardhat compile && node scripts/serve-gg6-mainnet-deployer.js",
+    "mainnet:gg6-verify": "hardhat run --network bsc scripts/verify-gg6-mainnet.js"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
