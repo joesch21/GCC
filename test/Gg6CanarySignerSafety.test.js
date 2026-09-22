@@ -21,11 +21,17 @@ describe("GG-6 exact canary signer safety surface", function () {
   it("signs typed data locally and contains no transaction send path", function () {
     expect(source).to.include("signTypedData");
     expect(source).to.include("verifyTypedData");
-    expect(source).to.include("SIGNATURE_VERIFIED_LOCALLY");
+    expect(source).to.include("SIGNATURE_RECOVERED_LOCALLY");
     expect(source).to.not.include("sendTransaction(");
     expect(source).to.not.include(".settle(");
     expect(source).to.not.include("eth_sendTransaction");
     expect(source).to.not.include("eth_sendRawTransaction");
+  });
+
+  it("requires bounded relayer dry-run for contract-level acceptance", function () {
+    expect(source).to.include("accountCodePresent");
+    expect(source).to.include("bounded relayer dry-run is required");
+    expect(source).to.not.include("currently expects the configured human authority to be an EOA");
   });
 
   it("never posts the signature back to the local server", function () {
