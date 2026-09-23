@@ -92,13 +92,19 @@ install -d -o root -g "$SOCKET_GROUP" -m 0750 "$CONFIG_ROOT"
 install -d -o root -g root -m 0700 "$CREDENTIAL_ROOT"
 
 install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/package.json" "$RUNTIME_APP/package.json"
-install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/package-lock.json" "$RUNTIME_APP/package-lock.json"
+if [[ -f "$SOURCE_ROOT/package-lock.json" ]]; then
+  install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/package-lock.json" "$RUNTIME_APP/package-lock.json"
+fi
 install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/src/gg7RelayCore.js" "$RUNTIME_APP/src/gg7RelayCore.js"
 install -o root -g "$SOCKET_GROUP" -m 0640   "$SOURCE_ROOT/src/genesisSettlement/encryptedRelayer.js"   "$RUNTIME_APP/src/genesisSettlement/encryptedRelayer.js"
 install -o root -g "$SOCKET_GROUP" -m 0640   "$SOURCE_ROOT/scripts/serve-gg7-grant-relayer.js"   "$RUNTIME_APP/scripts/serve-gg7-grant-relayer.js"
 
 cd "$RUNTIME_APP"
-npm ci --ignore-scripts >/dev/null
+if [[ -f package-lock.json ]]; then
+  npm ci --omit=dev --ignore-scripts >/dev/null
+else
+  npm install --omit=dev --ignore-scripts --no-audit --no-fund >/dev/null
+fi
 
 chown -R root:"$SOCKET_GROUP" "$RUNTIME_APP"
 find "$RUNTIME_APP" -type d -exec chmod 0750 {} +
