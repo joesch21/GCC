@@ -39,6 +39,8 @@ jobs:
           grep -q 'Group=tower-gg7' systemd/gcc-gg7-grant-relayer.service
           grep -q 'ProtectSystem=strict' systemd/gcc-gg7-grant-relayer.service
           grep -q 'CapabilityBoundingSet=' systemd/gcc-gg7-grant-relayer.service
+          grep -q 'if \[\[ -f package-lock.json \]\]' scripts/install-gg7-relay-service.sh
+          grep -q 'npm install --omit=dev --ignore-scripts --no-audit --no-fund' scripts/install-gg7-relay-service.sh
           ! grep -E 'GG7_RELAYER_PASSWORD=' systemd/gcc-gg7-grant-relayer.service
           ! grep -E 'privateKey|mnemonic|eth_sendRawTransaction' scripts/install-gg7-relay-service.sh
       - name: Preserve GG-7 relay source tests
