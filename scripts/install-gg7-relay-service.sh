@@ -39,6 +39,7 @@ pass() {
   fail "source worktree must be clean"
 [[ -f "$KEYSTORE_SOURCE" ]] || fail "Genesis relayer keystore missing: $KEYSTORE_SOURCE"
 [[ -f "$UNIT_SOURCE" ]] || fail "systemd unit missing: $UNIT_SOURCE"
+[[ -f "$SOURCE_ROOT/runtime/gg7/package.json" ]] || fail "GG-7 runtime package manifest missing"
 id "$TOWER_USER" >/dev/null 2>&1 || fail "Tower user missing: $TOWER_USER"
 command -v node >/dev/null 2>&1 || fail "node is required"
 command -v npm >/dev/null 2>&1 || fail "npm is required"
@@ -91,20 +92,19 @@ install -d -o root -g "$SOCKET_GROUP" -m 0750   "$RUNTIME_ROOT" "$RUNTIME_APP" "
 install -d -o root -g "$SOCKET_GROUP" -m 0750 "$CONFIG_ROOT"
 install -d -o root -g root -m 0700 "$CREDENTIAL_ROOT"
 
-install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/package.json" "$RUNTIME_APP/package.json"
-if [[ -f "$SOURCE_ROOT/package-lock.json" ]]; then
-  install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/package-lock.json" "$RUNTIME_APP/package-lock.json"
-fi
+install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/runtime/gg7/package.json" "$RUNTIME_APP/package.json"
+rm -rf "$RUNTIME_APP/node_modules" "$RUNTIME_APP/package-lock.json"
 install -o root -g "$SOCKET_GROUP" -m 0640 "$SOURCE_ROOT/src/gg7RelayCore.js" "$RUNTIME_APP/src/gg7RelayCore.js"
 install -o root -g "$SOCKET_GROUP" -m 0640   "$SOURCE_ROOT/src/genesisSettlement/encryptedRelayer.js"   "$RUNTIME_APP/src/genesisSettlement/encryptedRelayer.js"
 install -o root -g "$SOCKET_GROUP" -m 0640   "$SOURCE_ROOT/scripts/serve-gg7-grant-relayer.js"   "$RUNTIME_APP/scripts/serve-gg7-grant-relayer.js"
 
 cd "$RUNTIME_APP"
-if [[ -f package-lock.json ]]; then
-  npm ci --omit=dev --ignore-scripts >/dev/null
-else
-  npm install --omit=dev --ignore-scripts --no-audit --no-fund >/dev/null
-fi
+npm install --omit=dev --ignore-scripts --no-audit --no-fund >/dev/null
+
+node - <<'NODE' || fail "GG-7 runtime dependency check failed"
+const { Wallet, Contract, JsonRpcProvider } = require("ethers");
+if (!Wallet || !Contract || !JsonRpcProvider) process.exit(1);
+NODE
 
 chown -R root:"$SOCKET_GROUP" "$RUNTIME_APP"
 find "$RUNTIME_APP" -type d -exec chmod 0750 {} +

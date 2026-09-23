@@ -6,6 +6,8 @@ on:
       - ops/gg7-runtime-activation
     paths:
       - "scripts/install-gg7-relay-service.sh"
+      - "runtime/gg7/package.json"
+      - "runtime/gg7/package.json"
       - "systemd/gcc-gg7-grant-relayer.service"
       - "docs/GG7_RUNTIME_ACTIVATION.md"
       - ".github/workflows/gg7-runtime-activation.yml"
@@ -39,7 +41,8 @@ jobs:
           grep -q 'Group=tower-gg7' systemd/gcc-gg7-grant-relayer.service
           grep -q 'ProtectSystem=strict' systemd/gcc-gg7-grant-relayer.service
           grep -q 'CapabilityBoundingSet=' systemd/gcc-gg7-grant-relayer.service
-          grep -q 'if \[\[ -f package-lock.json \]\]' scripts/install-gg7-relay-service.sh
+          grep -q 'runtime/gg7/package.json' scripts/install-gg7-relay-service.sh
+          grep -q 'rm -rf "$RUNTIME_APP/node_modules" "$RUNTIME_APP/package-lock.json"' scripts/install-gg7-relay-service.sh
           grep -q 'npm install --omit=dev --ignore-scripts --no-audit --no-fund' scripts/install-gg7-relay-service.sh
           ! grep -E 'GG7_RELAYER_PASSWORD=' systemd/gcc-gg7-grant-relayer.service
           ! grep -E 'privateKey|mnemonic|eth_sendRawTransaction' scripts/install-gg7-relay-service.sh
@@ -47,3 +50,20 @@ jobs:
         run: |
           npm install --ignore-scripts
           npx hardhat test test/Gg7BoundedRelay.test.js
+
+  node18-relay-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.19.1"
+      - name: Install minimal GG-7 runtime dependencies
+        run: |
+          rm -rf /tmp/gg7-runtime-smoke
+          mkdir -p /tmp/gg7-runtime-smoke
+          cp runtime/gg7/package.json /tmp/gg7-runtime-smoke/package.json
+          cd /tmp/gg7-runtime-smoke
+          npm install --omit=dev --ignore-scripts --no-audit --no-fund
+          node -e 'const e=require("ethers"); if(!e.Wallet || !e.Contract || !e.JsonRpcProvider) process.exit(1)'

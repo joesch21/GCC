@@ -1,0 +1,9 @@
+{
+  "name": "gcc-gg7-relay-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Minimal runtime dependencies for the bounded GG-7 grant payout relay",
+  "dependencies": {
+    "ethers": "6.17.0"
+  }
+}
